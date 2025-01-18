@@ -1,7 +1,7 @@
 {
-  "homepage": "https://github.com/myorg/rules_mylang",
+  "homepage": "https://github.com/mrmeku/rules_playwright",
   "maintainers": [],
-  "repository": ["github:myorg/rules_mylang"],
+  "repository": ["github:mrmeku/rules_playwright"],
   "versions": [],
   "yanked_versions": {}
 }

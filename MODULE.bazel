@@ -1,7 +1,7 @@
 "Bazel dependencies"
 
 module(
-    name = "com_myorg_rules_mylang",
+    name = "com_mrmeku_rules_playwright",
     version = "0.0.0",
     compatibility_level = 1,
 )
@@ -14,8 +14,8 @@ bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.1", dev_dependenc
 bazel_dep(name = "aspect_bazel_lib", version = "1.32.1", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "6.1.2", dev_dependency = True)
 
-mylang = use_extension("//mylang:extensions.bzl", "mylang")
-mylang.toolchain(mylang_version = "1.14.2")
-use_repo(mylang, "mylang_toolchains")
+playwright = use_extension("//playwright:extensions.bzl", "playwright")
+playwright.toolchain(playwright_version = "1.14.2")
+use_repo(playwright, "playwright_toolchains")
 
-register_toolchains("@mylang_toolchains//:all")
+register_toolchains("@playwright_toolchains//:all")
