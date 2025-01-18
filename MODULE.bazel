@@ -2,7 +2,7 @@
 
 module(
     name = "com_mrmeku_rules_playwright",
-    version = "0.0.0",
+    version = "0.1.0",
     compatibility_level = 1,
 )
 
@@ -19,3 +19,39 @@ playwright.toolchain(playwright_version = "1.14.2")
 use_repo(playwright, "playwright_toolchains")
 
 register_toolchains("@playwright_toolchains//:all")
+
+bazel_dep(
+    name = "rules_rust",
+    version = "0.53.0",
+    dev_dependency = True,
+)
+
+rust = use_extension(
+    "@rules_rust//rust:extensions.bzl",
+    "rust",
+    dev_dependency = True,
+)
+rust.toolchain(
+    edition = "2021",
+    versions = ["1.81.0"],
+)
+use_repo(rust, "rust_toolchains")
+
+register_toolchains(
+    "@rust_toolchains//:all",
+    dev_dependency = True,
+)
+
+crate = use_extension(
+    "@rules_rust//crate_universe:extension.bzl",
+    "crate",
+    dev_dependency = True,
+)
+crate.from_cargo(
+    name = "crate_index",
+    cargo_lockfile = "//:Cargo.lock",
+    manifests = [
+        "//:Cargo.toml",
+    ],
+)
+use_repo(crate, "crate_index")
