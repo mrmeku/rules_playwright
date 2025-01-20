@@ -1,7 +1,7 @@
 "Bazel dependencies"
 
 module(
-    name = "com_mrmeku_rules_playwright",
+    name = "rules_playwright",
     version = "0.1.0",
     compatibility_level = 1,
 )
@@ -37,11 +37,6 @@ llvm.sysroot(
     name = "llvm_toolchain",
     label = "@sysroot_linux_aarch64//:sysroot",
     targets = ["linux-aarch64"],
-)
-llvm.sysroot(
-    name = "llvm_toolchain",
-    label = "@sysroot_darwin_universal//:sysroot",
-    targets = ["darwin-aarch64"],
 )
 
 register_toolchains("@llvm_toolchain//:all")
@@ -113,8 +108,10 @@ use_repo(crate, "crate_index")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# INTEL/AMD64 Sysroot. LastModified: 2024-04-26T19:15
+# https://commondatastorage.googleapis.com/chrome-linux-sysroot/
 http_archive(
-    name = "sysroot_darwin_universal",
+    name = "sysroot_linux_x64",
     build_file_content = """
 filegroup(
     name = "sysroot",
@@ -126,27 +123,25 @@ filegroup(
 )
 """,
     dev_dependency = True,
-    integrity = "sha256-mH1BpoAIxZ8RKNQ27XWskj2zBA20a2aMr7a0+7z0e/Q=",
-    strip_prefix = "sdk-macos-13.3-1615cd09b3a42ae590e05e63251a0e9fbc47bab5/root",
-    urls = ["https://github.com/hexops-graveyard/sdk-macos-13.3/archive/1615cd09b3a42ae590e05e63251a0e9fbc47bab5.tar.gz"],
-)
-
-# INTEL/AMD64 Sysroot. LastModified: 2024-04-26T19:15
-# https://commondatastorage.googleapis.com/chrome-linux-sysroot/
-http_archive(
-    name = "sysroot_linux_x64",
-    build_file = "//build/sysroot:BUILD.bazel",
     sha256 = "5df5be9357b425cdd70d92d4697d07e7d55d7a923f037c22dc80a78e85842d2c",
     urls = ["https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/4f611ec025be98214164d4bf9fbe8843f58533f7/debian_bullseye_amd64_sysroot.tar.xz"],
-    dev_dependency = True,
 )
 
 # ARM 64 Sysroot. LastModified: 2024-04-26T18:33
 # https://commondatastorage.googleapis.com/chrome-linux-sysroot/
 http_archive(
     name = "sysroot_linux_aarch64",
-    build_file = "//build/sysroot:BUILD.bazel",
+    build_file_content = """
+filegroup(
+    name = "sysroot",
+    srcs = glob(
+        include = ["**"],
+        exclude = ["**/*:*"],
+    ),
+    visibility = ["//visibility:public"],
+)
+""",
+    dev_dependency = True,
     sha256 = "d303cf3faf7804c9dd24c9b6b167d0345d41d7fe4bfb7d34add3ab342f6a236c",
     urls = ["https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/906cc7c6bf47d4bd969a3221fc0602c6b3153caa/debian_bullseye_arm64_sysroot.tar.xz"],
-    dev_dependency = True,
 )

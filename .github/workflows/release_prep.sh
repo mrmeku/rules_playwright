@@ -22,7 +22,7 @@ cat << EOF
 2. Add to your \`MODULE.bazel\` file:
 
 \`\`\`starlark
-bazel_dep(name = "com_mrmeku_rules_playwright", version = "${TAG:1}")
+bazel_dep(name = "rules_playwright", version = "${TAG:1}")
 \`\`\`
 
 ## Using WORKSPACE
@@ -32,7 +32,7 @@ Paste this snippet into your \`WORKSPACE.bazel\` file:
 \`\`\`starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
-    name = "com_mrmeku_rules_playwright",
+    name = "rules_playwright",
     sha256 = "${SHA}",
     strip_prefix = "${PREFIX}",
     url = "https://github.com/mrmeku/rules_playwright/releases/download/${TAG}/${ARCHIVE}",

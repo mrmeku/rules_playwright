@@ -1,3 +1,6 @@
+load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
+
 [
     platform(
         name = "{}_{}".format(os, cpu),
@@ -26,16 +29,15 @@ MACOS_ARTIFACTS = [
     "//playwright/tools/browser_workspace_gen:browser_workspace_gen_macos",
 ]
 
-sh_binary(
+copy_to_directory(
+    name = "release_artifacts",
+    srcs = LINUX_ARTIFACTS + MACOS_ARTIFACTS,
+    out = "artifacts",
+    root_paths = ["playwright/tools/browser_workspace_gen"],
+)
+
+write_source_file(
     name = "copy_release_artifacts",
-    srcs = ["copy_release_artifacts.sh"],
-    args = select({
-        "@platforms//os:linux": ["$(rlocationpaths {})".format(s) for s in LINUX_ARTIFACTS],
-        "@platforms//os:macos": ["$(rlocationpaths {})".format(s) for s in MACOS_ARTIFACTS],
-    }),
-    data = select({
-        "@platforms//os:linux": LINUX_ARTIFACTS,
-        "@platforms//os:macos": MACOS_ARTIFACTS,
-    }),
-    deps = ["@bazel_tools//tools/bash/runfiles"],
+    in_file = ":release_artifacts",
+    out_file = "artifacts",
 )

@@ -1,6 +1,6 @@
 # Override http_archive for local testing
 local_repository(
-    name = "com_mrmeku_rules_playwright",
+    name = "rules_playwright",
     path = "../..",
 )
 
@@ -14,6 +14,6 @@ local_repository(
 # you should fetch it *before* calling this.
 # Alternatively, you can skip calling this function, so long as you've
 # already fetched all the dependencies.
-load("@com_mrmeku_rules_playwright//playwright:repositories.bzl", "rules_playwright_dependencies")
+load("@rules_playwright//playwright:repositories.bzl", "rules_playwright_dependencies")
 
 rules_playwright_dependencies()

@@ -3,7 +3,7 @@ Add a basic smoke-test target below.
 """
 
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
-# load("@com_mrmeku_rules_playwright//playwright:defs.bzl", "...")
+# load("@rules_playwright//playwright:defs.bzl", "...")
 
 # Replace with a usage of your rule/macro
 filegroup(name = "empty")

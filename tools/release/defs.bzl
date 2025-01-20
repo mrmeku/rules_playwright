@@ -1,4 +1,4 @@
-"Make releases for platforms supported by rules_py"
+"Make releases for platforms supported by rules_playwright"
 
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@aspect_bazel_lib//tools/release:hashes.bzl", "hashes")
@@ -48,7 +48,6 @@ def rust_binary(name, visibility = [], **kwargs):
                 name = "copy_{}".format(arch_target_suffix),
                 src = binary_name,
                 out = artifact,
-                target_compatible_with = target_compatible_with,
             )
 
             hash_file = "{}.sha256".format(arch_target_suffix)
@@ -56,13 +55,11 @@ def rust_binary(name, visibility = [], **kwargs):
             hashes(
                 name = hash_file,
                 src = artifact,
-                target_compatible_with = target_compatible_with,
             )
 
         native.filegroup(
             name = target_suffix,
             srcs = outs,
-            target_compatible_with = target_compatible_with,
             tags = ["manual"],
             visibility = ["//tools/release:__pkg__"],
         )
