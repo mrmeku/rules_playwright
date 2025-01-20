@@ -1,4 +1,7 @@
-use crate::{browsers::Browsers, download_paths::DownloadPaths};
+use crate::{
+    browsers::Browsers,
+    download_paths::{DownloadPaths, Platform},
+};
 
 #[derive(Debug)]
 pub struct BrowserWorkspaceRule {
@@ -25,6 +28,9 @@ pub fn get_browser_rules(
                 .paths
                 .iter()
                 .filter_map(|(platform, template)| {
+                    if *platform == Platform::Unknown {
+                        return None;
+                    }
                     match (
                         template,
                         serde_json::to_string(platform)

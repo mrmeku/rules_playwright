@@ -14,8 +14,6 @@ pub struct DownloadPaths {
 #[derive(Debug, Clone, Hash, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum Platform {
-    #[serde(rename = "<unknown>")]
-    Unknown,
     #[serde(rename = "ubuntu18.04-x64")]
     Ubuntu1804X64,
     #[serde(rename = "ubuntu20.04-x64")]
@@ -53,6 +51,8 @@ pub enum Platform {
     Mac15,
     Mac15Arm64,
     Win64,
+    #[serde(rename = "<unknown>", other)]
+    Unknown,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

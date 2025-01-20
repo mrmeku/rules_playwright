@@ -10,11 +10,11 @@ names (the latest version will be picked for each name) and can register them as
 effectively overriding the default named toolchain due to toolchain resolution precedence.
 """
 
-load(":repositories.bzl", "playwright_register_toolchains")
+load(":repositories.bzl", "playwright_repository")
 
 _DEFAULT_NAME = "playwright"
 
-playwright_toolchain = tag_class(attrs = {
+playwright_repo = tag_class(attrs = {
     "name": attr.string(doc = """\
 Base name for generated repositories, allowing more than one playwright toolchain to be registered.
 Overriding the default is only permitted in the root module.
@@ -22,18 +22,18 @@ Overriding the default is only permitted in the root module.
     "playwright_version": attr.string(doc = "Explicit version of playwright.", mandatory = True),
 })
 
-def _toolchain_extension(module_ctx):
+def _extension_impl(module_ctx):
     registrations = {}
     for mod in module_ctx.modules:
-        for toolchain in mod.tags.toolchain:
-            if toolchain.name != _DEFAULT_NAME and not mod.is_root:
+        for repo in mod.tags.repo:
+            if repo.name != _DEFAULT_NAME and not mod.is_root:
                 fail("""\
                 Only the root module may override the default name for the playwright toolchain.
                 This prevents conflicting registrations in the global namespace of external repos.
                 """)
-            if toolchain.name not in registrations.keys():
-                registrations[toolchain.name] = []
-            registrations[toolchain.name].append(toolchain.playwright_version)
+            if repo.name not in registrations.keys():
+                registrations[repo.name] = []
+            registrations[repo.name].append(repo.playwright_version)
     for name, versions in registrations.items():
         if len(versions) > 1:
             # TODO: should be semver-aware, using MVS
@@ -44,13 +44,12 @@ def _toolchain_extension(module_ctx):
         else:
             selected = versions[0]
 
-        playwright_register_toolchains(
+        playwright_repository(
             name = name,
             playwright_version = selected,
-            register = False,
         )
 
 playwright = module_extension(
-    implementation = _toolchain_extension,
-    tag_classes = {"toolchain": playwright_toolchain},
+    implementation = _extension_impl,
+    tag_classes = {"repo": playwright_repo},
 )
