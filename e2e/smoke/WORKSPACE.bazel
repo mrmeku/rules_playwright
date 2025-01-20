@@ -9,11 +9,10 @@ local_repository(
 ######################
 # rules_playwright setup #
 ######################
-# Fetches the rules_playwright dependencies.
-# If you want to have a different version of some dependency,
-# you should fetch it *before* calling this.
-# Alternatively, you can skip calling this function, so long as you've
-# already fetched all the dependencies.
-load("@rules_playwright//playwright:repositories.bzl", "rules_playwright_dependencies")
+load("@rules_playwright//playwright:repositories.bzl", "playwright_repository")
 
-rules_playwright_dependencies()
+# Create an repository called playwright which contains all the playwright browsers
+playwright_repository(
+    name = "playwright",
+    playwright_version = "1.49.1",
+)
