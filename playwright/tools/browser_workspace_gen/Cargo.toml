@@ -1,5 +1,5 @@
 [package]
-name = "rules_playwright"
+name = "browser_workspace_gen"
 version = "0.1.0"
 edition = "2021"
 

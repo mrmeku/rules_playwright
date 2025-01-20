@@ -7,3 +7,4 @@ bazel-*
 # Added by cargo
 
 /target
+MODULE.bazel.lock

@@ -41,7 +41,7 @@ pub fn main() -> std::io::Result<()> {
     // Copy unzip_browser.bzl
     fs::write(
         out_dir.join("unzip_browser.bzl"),
-        include_str!("../unzip_browser.bzl"),
+        include_str!("unzip_browser.bzl"),
     )?;
 
     Ok(())
