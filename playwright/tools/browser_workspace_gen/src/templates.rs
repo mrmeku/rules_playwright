@@ -18,7 +18,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 def _impl(module_ctx):
     root_module_direct_deps = []
 
-    {% for rule in browser_rules %}
+    {%- for rule in browser_rules %}
     http_file(
         name = "{{ rule.name }}",
         urls = [{% for cdn in cdn_mirrors %}
@@ -96,9 +96,12 @@ module(
 )
 
 browsers = use_extension("//:extension.bzl", "browsers")
-{%- for rule in browser_rules %}
-use_repo(browsers, "{{ rule.name }}")
-{%- endfor %}
+use_repo(
+    browsers,
+    {%- for rule in browser_rules %}
+    "{{ rule.name }}",
+    {%- endfor %}
+)
 "#,
     ext = "txt"
 )]

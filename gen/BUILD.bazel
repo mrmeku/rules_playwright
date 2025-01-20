@@ -1,0 +1,1128 @@
+
+load("//:unzip_browser.bzl", "unzip_browser")
+
+package(default_visibility = ["//visibility:public"])
+
+
+unzip_browser(
+    name = "android-debian11-arm64",
+    browser = "@android-debian11-arm64//file",
+    output_dir = "android-1001/debian11-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-debian11-x64",
+    browser = "@android-debian11-x64//file",
+    output_dir = "android-1001/debian11-x64/android-1001",
+)
+
+unzip_browser(
+    name = "android-debian12-arm64",
+    browser = "@android-debian12-arm64//file",
+    output_dir = "android-1001/debian12-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-debian12-x64",
+    browser = "@android-debian12-x64//file",
+    output_dir = "android-1001/debian12-x64/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac10.13",
+    browser = "@android-mac10.13//file",
+    output_dir = "android-1001/mac10.13/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac10.14",
+    browser = "@android-mac10.14//file",
+    output_dir = "android-1001/mac10.14/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac10.15",
+    browser = "@android-mac10.15//file",
+    output_dir = "android-1001/mac10.15/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac11",
+    browser = "@android-mac11//file",
+    output_dir = "android-1001/mac11/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac11-arm64",
+    browser = "@android-mac11-arm64//file",
+    output_dir = "android-1001/mac11-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac12",
+    browser = "@android-mac12//file",
+    output_dir = "android-1001/mac12/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac12-arm64",
+    browser = "@android-mac12-arm64//file",
+    output_dir = "android-1001/mac12-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac13",
+    browser = "@android-mac13//file",
+    output_dir = "android-1001/mac13/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac13-arm64",
+    browser = "@android-mac13-arm64//file",
+    output_dir = "android-1001/mac13-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac14",
+    browser = "@android-mac14//file",
+    output_dir = "android-1001/mac14/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac14-arm64",
+    browser = "@android-mac14-arm64//file",
+    output_dir = "android-1001/mac14-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac15",
+    browser = "@android-mac15//file",
+    output_dir = "android-1001/mac15/android-1001",
+)
+
+unzip_browser(
+    name = "android-mac15-arm64",
+    browser = "@android-mac15-arm64//file",
+    output_dir = "android-1001/mac15-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-ubuntu20.04-arm64",
+    browser = "@android-ubuntu20.04-arm64//file",
+    output_dir = "android-1001/ubuntu20.04-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-ubuntu20.04-x64",
+    browser = "@android-ubuntu20.04-x64//file",
+    output_dir = "android-1001/ubuntu20.04-x64/android-1001",
+)
+
+unzip_browser(
+    name = "android-ubuntu22.04-arm64",
+    browser = "@android-ubuntu22.04-arm64//file",
+    output_dir = "android-1001/ubuntu22.04-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-ubuntu22.04-x64",
+    browser = "@android-ubuntu22.04-x64//file",
+    output_dir = "android-1001/ubuntu22.04-x64/android-1001",
+)
+
+unzip_browser(
+    name = "android-ubuntu24.04-arm64",
+    browser = "@android-ubuntu24.04-arm64//file",
+    output_dir = "android-1001/ubuntu24.04-arm64/android-1001",
+)
+
+unzip_browser(
+    name = "android-ubuntu24.04-x64",
+    browser = "@android-ubuntu24.04-x64//file",
+    output_dir = "android-1001/ubuntu24.04-x64/android-1001",
+)
+
+unzip_browser(
+    name = "android-win64",
+    browser = "@android-win64//file",
+    output_dir = "android-1001/win64/android-1001",
+)
+
+unzip_browser(
+    name = "chromium-debian11-arm64",
+    browser = "@chromium-debian11-arm64//file",
+    output_dir = "chromium-1148/debian11-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-debian11-x64",
+    browser = "@chromium-debian11-x64//file",
+    output_dir = "chromium-1148/debian11-x64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-debian12-arm64",
+    browser = "@chromium-debian12-arm64//file",
+    output_dir = "chromium-1148/debian12-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-debian12-x64",
+    browser = "@chromium-debian12-x64//file",
+    output_dir = "chromium-1148/debian12-x64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-debian11-arm64",
+    browser = "@chromium-headless-shell-debian11-arm64//file",
+    output_dir = "chromium-headless-shell-1148/debian11-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-debian11-x64",
+    browser = "@chromium-headless-shell-debian11-x64//file",
+    output_dir = "chromium-headless-shell-1148/debian11-x64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-debian12-arm64",
+    browser = "@chromium-headless-shell-debian12-arm64//file",
+    output_dir = "chromium-headless-shell-1148/debian12-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-debian12-x64",
+    browser = "@chromium-headless-shell-debian12-x64//file",
+    output_dir = "chromium-headless-shell-1148/debian12-x64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac11",
+    browser = "@chromium-headless-shell-mac11//file",
+    output_dir = "chromium-headless-shell-1148/mac11/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac11-arm64",
+    browser = "@chromium-headless-shell-mac11-arm64//file",
+    output_dir = "chromium-headless-shell-1148/mac11-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac12",
+    browser = "@chromium-headless-shell-mac12//file",
+    output_dir = "chromium-headless-shell-1148/mac12/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac12-arm64",
+    browser = "@chromium-headless-shell-mac12-arm64//file",
+    output_dir = "chromium-headless-shell-1148/mac12-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac13",
+    browser = "@chromium-headless-shell-mac13//file",
+    output_dir = "chromium-headless-shell-1148/mac13/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac13-arm64",
+    browser = "@chromium-headless-shell-mac13-arm64//file",
+    output_dir = "chromium-headless-shell-1148/mac13-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac14",
+    browser = "@chromium-headless-shell-mac14//file",
+    output_dir = "chromium-headless-shell-1148/mac14/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac14-arm64",
+    browser = "@chromium-headless-shell-mac14-arm64//file",
+    output_dir = "chromium-headless-shell-1148/mac14-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac15",
+    browser = "@chromium-headless-shell-mac15//file",
+    output_dir = "chromium-headless-shell-1148/mac15/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-mac15-arm64",
+    browser = "@chromium-headless-shell-mac15-arm64//file",
+    output_dir = "chromium-headless-shell-1148/mac15-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-ubuntu20.04-arm64",
+    browser = "@chromium-headless-shell-ubuntu20.04-arm64//file",
+    output_dir = "chromium-headless-shell-1148/ubuntu20.04-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-ubuntu20.04-x64",
+    browser = "@chromium-headless-shell-ubuntu20.04-x64//file",
+    output_dir = "chromium-headless-shell-1148/ubuntu20.04-x64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-ubuntu22.04-arm64",
+    browser = "@chromium-headless-shell-ubuntu22.04-arm64//file",
+    output_dir = "chromium-headless-shell-1148/ubuntu22.04-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-ubuntu22.04-x64",
+    browser = "@chromium-headless-shell-ubuntu22.04-x64//file",
+    output_dir = "chromium-headless-shell-1148/ubuntu22.04-x64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-ubuntu24.04-arm64",
+    browser = "@chromium-headless-shell-ubuntu24.04-arm64//file",
+    output_dir = "chromium-headless-shell-1148/ubuntu24.04-arm64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-ubuntu24.04-x64",
+    browser = "@chromium-headless-shell-ubuntu24.04-x64//file",
+    output_dir = "chromium-headless-shell-1148/ubuntu24.04-x64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-headless-shell-win64",
+    browser = "@chromium-headless-shell-win64//file",
+    output_dir = "chromium-headless-shell-1148/win64/chromium-headless-shell-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac10.13",
+    browser = "@chromium-mac10.13//file",
+    output_dir = "chromium-1148/mac10.13/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac10.14",
+    browser = "@chromium-mac10.14//file",
+    output_dir = "chromium-1148/mac10.14/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac10.15",
+    browser = "@chromium-mac10.15//file",
+    output_dir = "chromium-1148/mac10.15/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac11",
+    browser = "@chromium-mac11//file",
+    output_dir = "chromium-1148/mac11/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac11-arm64",
+    browser = "@chromium-mac11-arm64//file",
+    output_dir = "chromium-1148/mac11-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac12",
+    browser = "@chromium-mac12//file",
+    output_dir = "chromium-1148/mac12/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac12-arm64",
+    browser = "@chromium-mac12-arm64//file",
+    output_dir = "chromium-1148/mac12-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac13",
+    browser = "@chromium-mac13//file",
+    output_dir = "chromium-1148/mac13/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac13-arm64",
+    browser = "@chromium-mac13-arm64//file",
+    output_dir = "chromium-1148/mac13-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac14",
+    browser = "@chromium-mac14//file",
+    output_dir = "chromium-1148/mac14/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac14-arm64",
+    browser = "@chromium-mac14-arm64//file",
+    output_dir = "chromium-1148/mac14-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac15",
+    browser = "@chromium-mac15//file",
+    output_dir = "chromium-1148/mac15/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-mac15-arm64",
+    browser = "@chromium-mac15-arm64//file",
+    output_dir = "chromium-1148/mac15-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-debian11-arm64",
+    browser = "@chromium-tip-of-tree-debian11-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/debian11-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-debian11-x64",
+    browser = "@chromium-tip-of-tree-debian11-x64//file",
+    output_dir = "chromium-tip-of-tree-1277/debian11-x64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-debian12-arm64",
+    browser = "@chromium-tip-of-tree-debian12-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/debian12-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-debian12-x64",
+    browser = "@chromium-tip-of-tree-debian12-x64//file",
+    output_dir = "chromium-tip-of-tree-1277/debian12-x64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac10.13",
+    browser = "@chromium-tip-of-tree-mac10.13//file",
+    output_dir = "chromium-tip-of-tree-1277/mac10.13/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac10.14",
+    browser = "@chromium-tip-of-tree-mac10.14//file",
+    output_dir = "chromium-tip-of-tree-1277/mac10.14/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac10.15",
+    browser = "@chromium-tip-of-tree-mac10.15//file",
+    output_dir = "chromium-tip-of-tree-1277/mac10.15/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac11",
+    browser = "@chromium-tip-of-tree-mac11//file",
+    output_dir = "chromium-tip-of-tree-1277/mac11/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac11-arm64",
+    browser = "@chromium-tip-of-tree-mac11-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/mac11-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac12",
+    browser = "@chromium-tip-of-tree-mac12//file",
+    output_dir = "chromium-tip-of-tree-1277/mac12/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac12-arm64",
+    browser = "@chromium-tip-of-tree-mac12-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/mac12-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac13",
+    browser = "@chromium-tip-of-tree-mac13//file",
+    output_dir = "chromium-tip-of-tree-1277/mac13/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac13-arm64",
+    browser = "@chromium-tip-of-tree-mac13-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/mac13-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac14",
+    browser = "@chromium-tip-of-tree-mac14//file",
+    output_dir = "chromium-tip-of-tree-1277/mac14/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac14-arm64",
+    browser = "@chromium-tip-of-tree-mac14-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/mac14-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac15",
+    browser = "@chromium-tip-of-tree-mac15//file",
+    output_dir = "chromium-tip-of-tree-1277/mac15/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-mac15-arm64",
+    browser = "@chromium-tip-of-tree-mac15-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/mac15-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-ubuntu20.04-arm64",
+    browser = "@chromium-tip-of-tree-ubuntu20.04-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/ubuntu20.04-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-ubuntu20.04-x64",
+    browser = "@chromium-tip-of-tree-ubuntu20.04-x64//file",
+    output_dir = "chromium-tip-of-tree-1277/ubuntu20.04-x64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-ubuntu22.04-arm64",
+    browser = "@chromium-tip-of-tree-ubuntu22.04-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/ubuntu22.04-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-ubuntu22.04-x64",
+    browser = "@chromium-tip-of-tree-ubuntu22.04-x64//file",
+    output_dir = "chromium-tip-of-tree-1277/ubuntu22.04-x64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-ubuntu24.04-arm64",
+    browser = "@chromium-tip-of-tree-ubuntu24.04-arm64//file",
+    output_dir = "chromium-tip-of-tree-1277/ubuntu24.04-arm64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-ubuntu24.04-x64",
+    browser = "@chromium-tip-of-tree-ubuntu24.04-x64//file",
+    output_dir = "chromium-tip-of-tree-1277/ubuntu24.04-x64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-tip-of-tree-win64",
+    browser = "@chromium-tip-of-tree-win64//file",
+    output_dir = "chromium-tip-of-tree-1277/win64/chromium-tip-of-tree-1277",
+)
+
+unzip_browser(
+    name = "chromium-ubuntu20.04-arm64",
+    browser = "@chromium-ubuntu20.04-arm64//file",
+    output_dir = "chromium-1148/ubuntu20.04-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-ubuntu20.04-x64",
+    browser = "@chromium-ubuntu20.04-x64//file",
+    output_dir = "chromium-1148/ubuntu20.04-x64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-ubuntu22.04-arm64",
+    browser = "@chromium-ubuntu22.04-arm64//file",
+    output_dir = "chromium-1148/ubuntu22.04-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-ubuntu22.04-x64",
+    browser = "@chromium-ubuntu22.04-x64//file",
+    output_dir = "chromium-1148/ubuntu22.04-x64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-ubuntu24.04-arm64",
+    browser = "@chromium-ubuntu24.04-arm64//file",
+    output_dir = "chromium-1148/ubuntu24.04-arm64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-ubuntu24.04-x64",
+    browser = "@chromium-ubuntu24.04-x64//file",
+    output_dir = "chromium-1148/ubuntu24.04-x64/chromium-1148",
+)
+
+unzip_browser(
+    name = "chromium-win64",
+    browser = "@chromium-win64//file",
+    output_dir = "chromium-1148/win64/chromium-1148",
+)
+
+unzip_browser(
+    name = "ffmpeg-debian11-arm64",
+    browser = "@ffmpeg-debian11-arm64//file",
+    output_dir = "ffmpeg-1010/debian11-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-debian11-x64",
+    browser = "@ffmpeg-debian11-x64//file",
+    output_dir = "ffmpeg-1010/debian11-x64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-debian12-arm64",
+    browser = "@ffmpeg-debian12-arm64//file",
+    output_dir = "ffmpeg-1010/debian12-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-debian12-x64",
+    browser = "@ffmpeg-debian12-x64//file",
+    output_dir = "ffmpeg-1010/debian12-x64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac10.13",
+    browser = "@ffmpeg-mac10.13//file",
+    output_dir = "ffmpeg-1010/mac10.13/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac10.14",
+    browser = "@ffmpeg-mac10.14//file",
+    output_dir = "ffmpeg-1010/mac10.14/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac10.15",
+    browser = "@ffmpeg-mac10.15//file",
+    output_dir = "ffmpeg-1010/mac10.15/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac11",
+    browser = "@ffmpeg-mac11//file",
+    output_dir = "ffmpeg-1010/mac11/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac11-arm64",
+    browser = "@ffmpeg-mac11-arm64//file",
+    output_dir = "ffmpeg-1010/mac11-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac12",
+    browser = "@ffmpeg-mac12//file",
+    output_dir = "ffmpeg-1010/mac12/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac12-arm64",
+    browser = "@ffmpeg-mac12-arm64//file",
+    output_dir = "ffmpeg-1010/mac12-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac13",
+    browser = "@ffmpeg-mac13//file",
+    output_dir = "ffmpeg-1010/mac13/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac13-arm64",
+    browser = "@ffmpeg-mac13-arm64//file",
+    output_dir = "ffmpeg-1010/mac13-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac14",
+    browser = "@ffmpeg-mac14//file",
+    output_dir = "ffmpeg-1010/mac14/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac14-arm64",
+    browser = "@ffmpeg-mac14-arm64//file",
+    output_dir = "ffmpeg-1010/mac14-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac15",
+    browser = "@ffmpeg-mac15//file",
+    output_dir = "ffmpeg-1010/mac15/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-mac15-arm64",
+    browser = "@ffmpeg-mac15-arm64//file",
+    output_dir = "ffmpeg-1010/mac15-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-ubuntu20.04-arm64",
+    browser = "@ffmpeg-ubuntu20.04-arm64//file",
+    output_dir = "ffmpeg-1010/ubuntu20.04-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-ubuntu20.04-x64",
+    browser = "@ffmpeg-ubuntu20.04-x64//file",
+    output_dir = "ffmpeg-1010/ubuntu20.04-x64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-ubuntu22.04-arm64",
+    browser = "@ffmpeg-ubuntu22.04-arm64//file",
+    output_dir = "ffmpeg-1010/ubuntu22.04-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-ubuntu22.04-x64",
+    browser = "@ffmpeg-ubuntu22.04-x64//file",
+    output_dir = "ffmpeg-1010/ubuntu22.04-x64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-ubuntu24.04-arm64",
+    browser = "@ffmpeg-ubuntu24.04-arm64//file",
+    output_dir = "ffmpeg-1010/ubuntu24.04-arm64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-ubuntu24.04-x64",
+    browser = "@ffmpeg-ubuntu24.04-x64//file",
+    output_dir = "ffmpeg-1010/ubuntu24.04-x64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "ffmpeg-win64",
+    browser = "@ffmpeg-win64//file",
+    output_dir = "ffmpeg-1010/win64/ffmpeg-1010",
+)
+
+unzip_browser(
+    name = "firefox-beta-debian11-arm64",
+    browser = "@firefox-beta-debian11-arm64//file",
+    output_dir = "firefox-beta-1465/debian11-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-debian11-x64",
+    browser = "@firefox-beta-debian11-x64//file",
+    output_dir = "firefox-beta-1465/debian11-x64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-debian12-arm64",
+    browser = "@firefox-beta-debian12-arm64//file",
+    output_dir = "firefox-beta-1465/debian12-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-debian12-x64",
+    browser = "@firefox-beta-debian12-x64//file",
+    output_dir = "firefox-beta-1465/debian12-x64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac10.13",
+    browser = "@firefox-beta-mac10.13//file",
+    output_dir = "firefox-beta-1465/mac10.13/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac10.14",
+    browser = "@firefox-beta-mac10.14//file",
+    output_dir = "firefox-beta-1465/mac10.14/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac10.15",
+    browser = "@firefox-beta-mac10.15//file",
+    output_dir = "firefox-beta-1465/mac10.15/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac11",
+    browser = "@firefox-beta-mac11//file",
+    output_dir = "firefox-beta-1465/mac11/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac11-arm64",
+    browser = "@firefox-beta-mac11-arm64//file",
+    output_dir = "firefox-beta-1465/mac11-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac12",
+    browser = "@firefox-beta-mac12//file",
+    output_dir = "firefox-beta-1465/mac12/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac12-arm64",
+    browser = "@firefox-beta-mac12-arm64//file",
+    output_dir = "firefox-beta-1465/mac12-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac13",
+    browser = "@firefox-beta-mac13//file",
+    output_dir = "firefox-beta-1465/mac13/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac13-arm64",
+    browser = "@firefox-beta-mac13-arm64//file",
+    output_dir = "firefox-beta-1465/mac13-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac14",
+    browser = "@firefox-beta-mac14//file",
+    output_dir = "firefox-beta-1465/mac14/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac14-arm64",
+    browser = "@firefox-beta-mac14-arm64//file",
+    output_dir = "firefox-beta-1465/mac14-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac15",
+    browser = "@firefox-beta-mac15//file",
+    output_dir = "firefox-beta-1465/mac15/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-mac15-arm64",
+    browser = "@firefox-beta-mac15-arm64//file",
+    output_dir = "firefox-beta-1465/mac15-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-ubuntu20.04-x64",
+    browser = "@firefox-beta-ubuntu20.04-x64//file",
+    output_dir = "firefox-beta-1465/ubuntu20.04-x64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-ubuntu22.04-arm64",
+    browser = "@firefox-beta-ubuntu22.04-arm64//file",
+    output_dir = "firefox-beta-1465/ubuntu22.04-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-ubuntu22.04-x64",
+    browser = "@firefox-beta-ubuntu22.04-x64//file",
+    output_dir = "firefox-beta-1465/ubuntu22.04-x64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-ubuntu24.04-arm64",
+    browser = "@firefox-beta-ubuntu24.04-arm64//file",
+    output_dir = "firefox-beta-1465/ubuntu24.04-arm64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-ubuntu24.04-x64",
+    browser = "@firefox-beta-ubuntu24.04-x64//file",
+    output_dir = "firefox-beta-1465/ubuntu24.04-x64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-beta-win64",
+    browser = "@firefox-beta-win64//file",
+    output_dir = "firefox-beta-1465/win64/firefox-beta-1465",
+)
+
+unzip_browser(
+    name = "firefox-debian11-arm64",
+    browser = "@firefox-debian11-arm64//file",
+    output_dir = "firefox-1466/debian11-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-debian11-x64",
+    browser = "@firefox-debian11-x64//file",
+    output_dir = "firefox-1466/debian11-x64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-debian12-arm64",
+    browser = "@firefox-debian12-arm64//file",
+    output_dir = "firefox-1466/debian12-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-debian12-x64",
+    browser = "@firefox-debian12-x64//file",
+    output_dir = "firefox-1466/debian12-x64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac10.13",
+    browser = "@firefox-mac10.13//file",
+    output_dir = "firefox-1466/mac10.13/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac10.14",
+    browser = "@firefox-mac10.14//file",
+    output_dir = "firefox-1466/mac10.14/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac10.15",
+    browser = "@firefox-mac10.15//file",
+    output_dir = "firefox-1466/mac10.15/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac11",
+    browser = "@firefox-mac11//file",
+    output_dir = "firefox-1466/mac11/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac11-arm64",
+    browser = "@firefox-mac11-arm64//file",
+    output_dir = "firefox-1466/mac11-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac12",
+    browser = "@firefox-mac12//file",
+    output_dir = "firefox-1466/mac12/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac12-arm64",
+    browser = "@firefox-mac12-arm64//file",
+    output_dir = "firefox-1466/mac12-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac13",
+    browser = "@firefox-mac13//file",
+    output_dir = "firefox-1466/mac13/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac13-arm64",
+    browser = "@firefox-mac13-arm64//file",
+    output_dir = "firefox-1466/mac13-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac14",
+    browser = "@firefox-mac14//file",
+    output_dir = "firefox-1466/mac14/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac14-arm64",
+    browser = "@firefox-mac14-arm64//file",
+    output_dir = "firefox-1466/mac14-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac15",
+    browser = "@firefox-mac15//file",
+    output_dir = "firefox-1466/mac15/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-mac15-arm64",
+    browser = "@firefox-mac15-arm64//file",
+    output_dir = "firefox-1466/mac15-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-ubuntu20.04-arm64",
+    browser = "@firefox-ubuntu20.04-arm64//file",
+    output_dir = "firefox-1466/ubuntu20.04-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-ubuntu20.04-x64",
+    browser = "@firefox-ubuntu20.04-x64//file",
+    output_dir = "firefox-1466/ubuntu20.04-x64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-ubuntu22.04-arm64",
+    browser = "@firefox-ubuntu22.04-arm64//file",
+    output_dir = "firefox-1466/ubuntu22.04-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-ubuntu22.04-x64",
+    browser = "@firefox-ubuntu22.04-x64//file",
+    output_dir = "firefox-1466/ubuntu22.04-x64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-ubuntu24.04-arm64",
+    browser = "@firefox-ubuntu24.04-arm64//file",
+    output_dir = "firefox-1466/ubuntu24.04-arm64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-ubuntu24.04-x64",
+    browser = "@firefox-ubuntu24.04-x64//file",
+    output_dir = "firefox-1466/ubuntu24.04-x64/firefox-1466",
+)
+
+unzip_browser(
+    name = "firefox-win64",
+    browser = "@firefox-win64//file",
+    output_dir = "firefox-1466/win64/firefox-1466",
+)
+
+unzip_browser(
+    name = "webkit-debian11-arm64",
+    browser = "@webkit-debian11-arm64//file",
+    output_dir = "webkit-2104/debian11-arm64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-debian11-x64",
+    browser = "@webkit-debian11-x64//file",
+    output_dir = "webkit-2104/debian11-x64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-debian12-arm64",
+    browser = "@webkit-debian12-arm64//file",
+    output_dir = "webkit-2104/debian12-arm64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-debian12-x64",
+    browser = "@webkit-debian12-x64//file",
+    output_dir = "webkit-2104/debian12-x64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-mac10.14",
+    browser = "@webkit-mac10.14//file",
+    output_dir = "webkit-1446/mac10.14/webkit-1446",
+)
+
+unzip_browser(
+    name = "webkit-mac10.15",
+    browser = "@webkit-mac10.15//file",
+    output_dir = "webkit-1616/mac10.15/webkit-1616",
+)
+
+unzip_browser(
+    name = "webkit-mac11",
+    browser = "@webkit-mac11//file",
+    output_dir = "webkit-1816/mac11/webkit-1816",
+)
+
+unzip_browser(
+    name = "webkit-mac11-arm64",
+    browser = "@webkit-mac11-arm64//file",
+    output_dir = "webkit-1816/mac11-arm64/webkit-1816",
+)
+
+unzip_browser(
+    name = "webkit-mac12",
+    browser = "@webkit-mac12//file",
+    output_dir = "webkit-2009/mac12/webkit-2009",
+)
+
+unzip_browser(
+    name = "webkit-mac12-arm64",
+    browser = "@webkit-mac12-arm64//file",
+    output_dir = "webkit-2009/mac12-arm64/webkit-2009",
+)
+
+unzip_browser(
+    name = "webkit-mac13",
+    browser = "@webkit-mac13//file",
+    output_dir = "webkit-2104/mac13/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-mac13-arm64",
+    browser = "@webkit-mac13-arm64//file",
+    output_dir = "webkit-2104/mac13-arm64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-mac14",
+    browser = "@webkit-mac14//file",
+    output_dir = "webkit-2104/mac14/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-mac14-arm64",
+    browser = "@webkit-mac14-arm64//file",
+    output_dir = "webkit-2104/mac14-arm64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-mac15",
+    browser = "@webkit-mac15//file",
+    output_dir = "webkit-2104/mac15/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-mac15-arm64",
+    browser = "@webkit-mac15-arm64//file",
+    output_dir = "webkit-2104/mac15-arm64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-ubuntu20.04-arm64",
+    browser = "@webkit-ubuntu20.04-arm64//file",
+    output_dir = "webkit-2092/ubuntu20.04-arm64/webkit-2092",
+)
+
+unzip_browser(
+    name = "webkit-ubuntu20.04-x64",
+    browser = "@webkit-ubuntu20.04-x64//file",
+    output_dir = "webkit-2092/ubuntu20.04-x64/webkit-2092",
+)
+
+unzip_browser(
+    name = "webkit-ubuntu22.04-arm64",
+    browser = "@webkit-ubuntu22.04-arm64//file",
+    output_dir = "webkit-2104/ubuntu22.04-arm64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-ubuntu22.04-x64",
+    browser = "@webkit-ubuntu22.04-x64//file",
+    output_dir = "webkit-2104/ubuntu22.04-x64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-ubuntu24.04-arm64",
+    browser = "@webkit-ubuntu24.04-arm64//file",
+    output_dir = "webkit-2104/ubuntu24.04-arm64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-ubuntu24.04-x64",
+    browser = "@webkit-ubuntu24.04-x64//file",
+    output_dir = "webkit-2104/ubuntu24.04-x64/webkit-2104",
+)
+
+unzip_browser(
+    name = "webkit-win64",
+    browser = "@webkit-win64//file",
+    output_dir = "webkit-2104/win64/webkit-2104",
+)
+

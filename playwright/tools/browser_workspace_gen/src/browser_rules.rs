@@ -15,7 +15,7 @@ pub fn get_browser_rules(
     browsers: Browsers,
     download_paths: DownloadPaths,
 ) -> Vec<BrowserWorkspaceRule> {
-    browsers
+    let mut browser_rules: Vec<BrowserWorkspaceRule> = browsers
         .browsers
         .into_iter()
         .flat_map(|browser| {
@@ -61,5 +61,9 @@ pub fn get_browser_rules(
                 .collect();
             browser_rules
         })
-        .collect()
+        .collect();
+
+    browser_rules.sort_by(|a, b| a.name.cmp(&b.name));
+
+    browser_rules
 }
