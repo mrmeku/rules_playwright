@@ -1,0 +1,10 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_file(
+    name = "chromium-mac10.14",
+    urls = [
+        "https://playwright.azureedge.net/builds/chromium/1148/chromium-mac.zip",
+        "https://playwright-akamai.azureedge.net/builds/chromium/1148/chromium-mac.zip",
+        "https://playwright-verizon.azureedge.net/builds/chromium/1148/chromium-mac.zip",
+    ],
+)

@@ -44,6 +44,8 @@ pub fn generate_workspace(browser_rules: &Vec<BrowserWorkspaceRule>) -> String {
     source = r#"
 load("//:unzip_browser.bzl", "unzip_browser")
 
+package(default_visibility = ["//visibility:public"])
+
 {% for rule in browser_rules %}
 unzip_browser(
     name = "{{ rule.name }}",

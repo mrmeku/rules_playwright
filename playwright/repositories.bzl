@@ -29,12 +29,13 @@ def _playwright_repo_impl(repository_ctx):
     if "mac" in repository_ctx.os.name:
         platform = "apple-darwin"
 
-    browser_workspace_gen_path = str(repository_ctx.path(Label("//tools/release:artifacts/browser_workspace_gen-{arch}-{platform}".format(platform = platform, arch = arch))))
+    browser_workspace_gen_path = repository_ctx.path(Label("//tools/release:artifacts/browser_workspace_gen-{arch}-{platform}".format(platform = platform, arch = arch)))
     print(browser_workspace_gen_path)
+
     repository_ctx.execute(
         [
-            "/Users/mrmeku/rules_playwright/target/debug/browser_workspace_gen",
-            # browser_workspace_gen_path,
+            # "/Users/mrmeku/rules_playwright/target/debug/browser_workspace_gen",
+            browser_workspace_gen_path,
             "--browser-json-path",
             "browsers.json",
         ],

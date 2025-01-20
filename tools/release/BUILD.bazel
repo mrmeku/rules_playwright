@@ -38,6 +38,7 @@ copy_to_directory(
 
 write_source_file(
     name = "copy_release_artifacts",
+    executable = True,
     in_file = ":release_artifacts",
     out_file = "artifacts",
 )

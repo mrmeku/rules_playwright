@@ -4,6 +4,12 @@ local_path_override(
     module_name = "rules_playwright",
     path = "../..",
 )
+playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
+playwright.repo(
+    name = "playwright",
+    playwright_version = "1.49.0",
+)
+use_repo(playwright, "playwright")
 
 bazel_dep(name = "aspect_rules_js", version = "2.1.2")
 
