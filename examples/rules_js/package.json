@@ -1,0 +1,8 @@
+{
+	"devDependencies": {
+		"playwright": "^1.49.1"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": []
+	}
+}
