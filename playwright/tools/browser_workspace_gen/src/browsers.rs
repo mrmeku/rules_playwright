@@ -15,6 +15,8 @@ pub enum Browser {
 
 use serde::{Deserialize, Serialize};
 
+use crate::download_paths::Platform;
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Browsers {
     pub browsers: Vec<BrowserData>,
@@ -29,5 +31,5 @@ pub struct BrowserData {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub browser_version: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub revision_overrides: Option<HashMap<String, String>>,
+    pub revision_overrides: Option<HashMap<Platform, String>>,
 }

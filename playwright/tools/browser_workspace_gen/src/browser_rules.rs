@@ -38,14 +38,20 @@ pub fn get_browser_rules(
                         serde_json::to_string(&browser.name)
                             .map(|name| name.trim_matches('"').to_string()),
                     ) {
-                        (Some(template), Ok(platform), Ok(browser_name)) => {
+                        (Some(template), Ok(platform_str), Ok(browser_name)) => {
+                            let revision = browser
+                                .revision_overrides
+                                .as_ref()
+                                .and_then(|overrides| overrides.get(platform))
+                                .unwrap_or(&browser.revision);
+
                             Some(BrowserWorkspaceRule {
-                                name: format!("{browser_name}-{platform}"),
-                                downloaded_zip_path: template.replace("%s", &browser.revision),
-                                extraction_dir: format!("{browser_name}-{}", browser.revision),
+                                name: format!("{browser_name}-{platform_str}"),
+                                downloaded_zip_path: template.replace("%s", revision),
+                                extraction_dir: format!("{browser_name}-{}", revision),
                                 extraction_path: format!(
-                                    "{platform}/{browser_name}-{}",
-                                    browser.revision
+                                    "{platform_str}/{browser_name}-{}",
+                                    revision
                                 ),
                             })
                         }
