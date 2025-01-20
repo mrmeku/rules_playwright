@@ -1,3 +1,8 @@
 [workspace]
 resolver = "2"
 members = ["playwright/tools/browser_workspace_gen"]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.84.0"
+readme = "README.md"

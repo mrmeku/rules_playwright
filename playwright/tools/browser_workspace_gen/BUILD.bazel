@@ -1,0 +1,19 @@
+load("@crate_index//:defs.bzl", "all_crate_deps")
+load("//tools/release:defs.bzl", "rust_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+rust_binary(
+    name = "browser_workspace_gen",
+    srcs = glob([
+        "src/*.rs",
+    ]),
+    compile_data = [
+        "src/browsers.json",
+        "src/download_paths.json",
+        "src/unzip_browser.bzl",
+    ],
+    deps = all_crate_deps(
+        normal = True,
+    ),
+)

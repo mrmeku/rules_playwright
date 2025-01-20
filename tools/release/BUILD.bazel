@@ -6,26 +6,24 @@
             "@platforms//cpu:" + cpu,
             "//tools/linkers:musl" if os == "linux" else "//tools/linkers:unknown",
         ],
-        visibility = ["//py/tools:__subpackages__"],
+        visibility = ["//playwright/tools:__subpackages__"],
     )
     for os in [
         "linux",
         "macos",
     ]
     for cpu in [
-        "aarch64",
+        "arm64",
         "x86_64",
     ]
 ]
 
 LINUX_ARTIFACTS = [
-    "//py/tools/unpack_bin:unpack_linux",
-    "//py/tools/venv_bin:venv_linux",
+    "//playwright/tools/browser_workspace_gen:browser_workspace_gen_linux",
 ]
 
 MACOS_ARTIFACTS = [
-    "//py/tools/unpack_bin:unpack_macos",
-    "//py/tools/venv_bin:venv_macos",
+    "//playwright/tools/browser_workspace_gen:browser_workspace_gen_macos",
 ]
 
 sh_binary(

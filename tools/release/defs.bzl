@@ -5,7 +5,7 @@ load("@aspect_bazel_lib//tools/release:hashes.bzl", "hashes")
 load("@rules_rust//rust:defs.bzl", _rust_binary = "rust_binary")
 
 DEFAULT_OS = ["linux", "macos"]
-DEFAULT_ARCHS = ["aarch64", "x86_64"]
+DEFAULT_ARCHS = ["arm64", "x86_64"]
 
 def _map_os_to_triple(os):
     if os == "linux":
