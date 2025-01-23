@@ -1,62 +1,8 @@
-use std::{fs, path::PathBuf};
+use std::{fs, io, path::Path};
 
 use askama::Template;
 
-use crate::browser_rules::BrowserWorkspaceRule;
-
-const PLAYWRIGHT_CDN_MIRRORS: &[&str] = &[
-    "https://playwright.azureedge.net",
-    "https://playwright-akamai.azureedge.net",
-    "https://playwright-verizon.azureedge.net",
-];
-
-#[derive(Template)]
-#[template(
-    source = r#"
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-
-def _impl(module_ctx):
-    root_module_direct_deps = []
-
-    {%- for rule in browser_rules %}
-    http_file(
-        name = "{{ rule.name }}",
-        urls = [{% for cdn in cdn_mirrors %}
-            "{{ cdn }}/{{ rule.downloaded_zip_path }}",
-        {%- endfor %}
-        ],
-    )
-    root_module_direct_deps.append("{{ rule.name }}")
-    {% endfor %}
-
-    return module_ctx.extension_metadata(
-        root_module_direct_deps = root_module_direct_deps,
-        root_module_direct_dev_deps = [],
-    )
-
-browsers = module_extension(
-    implementation = _impl,
-)
-"#,
-    ext = "txt"
-)]
-struct ExtensionTemplate<'a> {
-    browser_rules: &'a Vec<BrowserWorkspaceRule>,
-    cdn_mirrors: &'a [&'a str],
-}
-
-pub fn write_extension_bzl(out_dir: &PathBuf, browser_rules: &Vec<BrowserWorkspaceRule>) -> () {
-    fs::write(
-        out_dir.join("extension.bzl"),
-        ExtensionTemplate {
-            browser_rules,
-            cdn_mirrors: PLAYWRIGHT_CDN_MIRRORS,
-        }
-        .render()
-        .unwrap(),
-    )
-    .unwrap()
-}
+use crate::browser_targets::BrowserTarget;
 
 #[derive(Template)]
 #[template(
@@ -65,54 +11,23 @@ load("//:unzip_browser.bzl", "unzip_browser")
 
 package(default_visibility = ["//visibility:public"])
 
-{% for rule in browser_rules %}
+{% for target in browser_targets %}
 unzip_browser(
-    name = "{{ rule.name }}",
-    browser = "@{{ rule.name }}//file",
-    output_dir = "{{ rule.extraction_dir }}/{{ rule.extraction_path }}",
+    name = "{{ target.label }}",
+    browser = "@{{ target.http_file_workspace_name }}//file",
+    output_dir = "{{ target.output_dir }}",
 )
 {% endfor %}
 "#,
     ext = "txt"
 )]
 struct BuildFileTemplate<'a> {
-    browser_rules: &'a Vec<BrowserWorkspaceRule>,
+    browser_targets: &'a Vec<BrowserTarget>,
 }
 
-pub fn write_build_file(out_dir: &PathBuf, browser_rules: &Vec<BrowserWorkspaceRule>) -> () {
+pub fn write_build_file(out_dir: &Path, browser_targets: &Vec<BrowserTarget>) -> io::Result<()> {
     fs::write(
         out_dir.join("BUILD.bazel"),
-        BuildFileTemplate { browser_rules }.render().unwrap(),
+        BuildFileTemplate { browser_targets }.render().unwrap(),
     )
-    .unwrap()
-}
-
-#[derive(Template)]
-#[template(
-    source = r#"
-module(
-    name = "playwright",
-    version = "0.0.0",
-)
-
-browsers = use_extension("//:extension.bzl", "browsers")
-use_repo(
-    browsers,
-    {%- for rule in browser_rules %}
-    "{{ rule.name }}",
-    {%- endfor %}
-)
-"#,
-    ext = "txt"
-)]
-struct ModuleBzlTemplate<'a> {
-    browser_rules: &'a Vec<BrowserWorkspaceRule>,
-}
-
-pub fn write_module_bzl(out_dir: &PathBuf, browser_rules: &Vec<BrowserWorkspaceRule>) -> () {
-    fs::write(
-        out_dir.join("MODULE.bazel"),
-        ModuleBzlTemplate { browser_rules }.render().unwrap(),
-    )
-    .unwrap()
 }

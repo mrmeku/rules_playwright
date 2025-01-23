@@ -50,13 +50,6 @@ def rust_binary(name, visibility = [], **kwargs):
                 out = artifact,
             )
 
-            hash_file = "{}.sha256".format(arch_target_suffix)
-            outs.append(hash_file)
-            hashes(
-                name = hash_file,
-                src = artifact,
-            )
-
         native.filegroup(
             name = target_suffix,
             srcs = outs,

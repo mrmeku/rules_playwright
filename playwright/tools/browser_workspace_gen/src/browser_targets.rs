@@ -1,21 +1,39 @@
+use serde::Serialize;
+
 use crate::{
     browsers::Browsers,
     download_paths::{DownloadPaths, Platform},
 };
 
-#[derive(Debug)]
-pub struct BrowserWorkspaceRule {
+#[derive(Debug, Serialize)]
+pub struct BrowserTarget {
+    pub http_file_workspace_name: String,
+    pub http_file_path: String,
+    pub label: String,
+    pub output_dir: String,
+}
+
+#[derive(Debug, Serialize)]
+pub struct HttpFile {
     pub name: String,
-    pub downloaded_zip_path: String,
-    pub extraction_path: String,
-    pub extraction_dir: String,
+    pub path: String,
+}
+
+impl From<BrowserTarget> for HttpFile {
+    fn from(value: BrowserTarget) -> Self {
+        HttpFile {
+            name: value.http_file_workspace_name,
+            path: value.http_file_path,
+        }
+    }
 }
 
 pub fn get_browser_rules(
+    workspace_name: &str,
     browsers: Browsers,
     download_paths: DownloadPaths,
-) -> Vec<BrowserWorkspaceRule> {
-    let mut browser_rules: Vec<BrowserWorkspaceRule> = browsers
+) -> Vec<BrowserTarget> {
+    let mut browser_rules: Vec<BrowserTarget> = browsers
         .browsers
         .into_iter()
         .flat_map(|browser| {
@@ -23,7 +41,7 @@ pub fn get_browser_rules(
             if paths.is_none() {
                 return vec![];
             }
-            let browser_rules: Vec<BrowserWorkspaceRule> = paths
+            let browser_rules: Vec<BrowserTarget> = paths
                 .unwrap()
                 .paths
                 .iter()
@@ -45,14 +63,13 @@ pub fn get_browser_rules(
                                 .and_then(|overrides| overrides.get(platform))
                                 .unwrap_or(&browser.revision);
 
-                            Some(BrowserWorkspaceRule {
-                                name: format!("{browser_name}-{platform_str}"),
-                                downloaded_zip_path: template.replace("%s", revision),
-                                extraction_dir: format!("{browser_name}-{}", revision),
-                                extraction_path: format!(
-                                    "{platform_str}/{browser_name}-{}",
-                                    revision
+                            Some(BrowserTarget {
+                                http_file_workspace_name: format!(
+                                    "{workspace_name}-{browser_name}-{platform_str}"
                                 ),
+                                http_file_path: template.replace("%s", revision),
+                                label: format!("{browser_name}-{platform_str}"),
+                                output_dir: format!("{browser_name}-{revision}/{platform_str}/{browser_name}-{revision}"),
                             })
                         }
                         _ => None,
@@ -63,7 +80,7 @@ pub fn get_browser_rules(
         })
         .collect();
 
-    browser_rules.sort_by(|a, b| a.name.cmp(&b.name));
+    browser_rules.sort_by(|a, b| a.label.cmp(&b.label));
 
     browser_rules
 }

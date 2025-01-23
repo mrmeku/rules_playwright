@@ -7,6 +7,8 @@ Public API re-exports
 ## example
 
 <pre>
+load("@rules_playwright//playwright:defs.bzl", "example")
+
 example()
 </pre>
 
