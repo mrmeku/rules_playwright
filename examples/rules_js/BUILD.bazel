@@ -3,23 +3,72 @@ load("@npm//:playwright/package_json.bzl", playwright_bin = "bin")
 
 npm_link_all_packages(name = "node_modules")
 
-playwright_bin.playwright(
-    name = "test",
-    srcs = [
-        "example.spec.js",
+playwright_bin.playwright_test(
+    name = "all",
+    args = [
+        "test",
+        "--browser=all",
     ],
+    data = [
+        "package.json",
+        "tests/example.spec.js",
+        "//:node_modules/@playwright/test",
+        "@playwright//:chromium-headless-shell-mac14-arm64",
+        "@playwright//:firefox-mac14-arm64",
+        "@playwright//:webkit-mac14-arm64",
+    ],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell-mac14-arm64)/../",
+    },
 )
 
-filegroup(
-    name = "browsers",
-    srcs = [
-        # "@playwright//:android-mac15-arm64",
-        # "@playwright//:chromium-headless-shell-mac15-arm64",
-        "@playwright//:chromium-mac15-arm64",
-        # "@playwright//:chromium-tip-of-tree-mac15-arm64",
-        # "@playwright//:ffmpeg-mac15-arm64",
-        # "@playwright//:firefox-beta-mac15-arm64",
-        "@playwright//:firefox-mac15-arm64",
-        "@playwright//:webkit-mac15-arm64",
+playwright_bin.playwright_test(
+    name = "chromium",
+    args = [
+        "test",
+        "--browser=chromium",
     ],
+    data = [
+        "package.json",
+        "tests/example.spec.js",
+        "//:node_modules/@playwright/test",
+        "@playwright//:chromium-headless-shell-mac14-arm64",
+    ],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell-mac14-arm64)/../",
+    },
+)
+
+playwright_bin.playwright_test(
+    name = "firefox",
+    args = [
+        "test",
+        "--browser=firefox",
+    ],
+    data = [
+        "package.json",
+        "tests/example.spec.js",
+        "//:node_modules/@playwright/test",
+        "@playwright//:firefox-mac14-arm64",
+    ],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:firefox-mac14-arm64)/../",
+    },
+)
+
+playwright_bin.playwright_test(
+    name = "webkit",
+    args = [
+        "test",
+        "--browser=webkit",
+    ],
+    data = [
+        "package.json",
+        "tests/example.spec.js",
+        "//:node_modules/@playwright/test",
+        "@playwright//:webkit-mac14-arm64",
+    ],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:webkit-mac14-arm64)/../",
+    },
 )

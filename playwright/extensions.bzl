@@ -57,9 +57,12 @@ def _extension_impl(module_ctx):
             output = browsers_json_path,
         )
 
+        browser_workspace_gen = get_browser_workspace_gen_path(module_ctx)
+        module_ctx.watch(browser_workspace_gen)
+
         result = module_ctx.execute(
             [
-                get_browser_workspace_gen_path(module_ctx),
+                browser_workspace_gen,
                 "http-files",
                 "--browser-json-path",
                 browsers_json_path,
