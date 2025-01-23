@@ -16,7 +16,7 @@ common --nolegacy_external_runfiles
 common --check_direct_dependencies=off
 
 # Minimize the size of our rust binaries
-build --compilation_mode=opt
+build:release --compilation_mode=opt
 
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members

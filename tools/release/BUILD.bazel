@@ -34,11 +34,14 @@ copy_to_directory(
     srcs = LINUX_ARTIFACTS + MACOS_ARTIFACTS,
     out = "artifacts",
     root_paths = ["playwright/tools/browser_workspace_gen"],
+    tags = ["manual"],
 )
 
 write_source_file(
     name = "copy_release_artifacts",
+    diff_test = False,
     executable = True,
     in_file = ":release_artifacts",
     out_file = "artifacts",
+    tags = ["manual"],
 )

@@ -15,4 +15,5 @@ load("@rules_playwright//playwright:repositories.bzl", "playwright_repository")
 playwright_repository(
     name = "playwright",
     playwright_version = "1.49.1",
+    user_workspace_name = "playwright",
 )

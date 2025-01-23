@@ -1,9 +1,9 @@
 bazel_dep(name = "rules_playwright", version = "0.0.0")
-
 local_path_override(
     module_name = "rules_playwright",
     path = "../..",
 )
+
 playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
 playwright.repo(
     name = "playwright",
@@ -14,13 +14,11 @@ use_repo(playwright, "playwright")
 bazel_dep(name = "aspect_rules_js", version = "2.1.2")
 
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
-
 npm.npm_translate_lock(
     name = "npm",
     pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
 )
-
 use_repo(npm, "npm")
 
 pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")

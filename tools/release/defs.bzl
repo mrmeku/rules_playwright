@@ -1,7 +1,6 @@
 "Make releases for platforms supported by rules_playwright"
 
 load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file")
-load("@aspect_bazel_lib//tools/release:hashes.bzl", "hashes")
 load("@rules_rust//rust:defs.bzl", _rust_binary = "rust_binary")
 
 DEFAULT_OS = ["linux", "macos"]
@@ -48,6 +47,7 @@ def rust_binary(name, visibility = [], **kwargs):
                 name = "copy_{}".format(arch_target_suffix),
                 src = binary_name,
                 out = artifact,
+                tags = ["manual"],
             )
 
         native.filegroup(

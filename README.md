@@ -61,12 +61,13 @@ chromium_headless_shell-1148
 firefox-1466
 
 It will consume the npm dependency of playwright
-to get the json file at 
+to get the json file at
 node_modules/.pnpm/playwright-core\@1.49.1/node_modules/playwright-core/browsers.json
 and generate the external workspace needed by
 the toolchain.
 
 Steps are the following
+
 - Copy browsers.json manually to repo
 - Handcode what generated workspace should look like
 - Create toolchain to consume generated workspace

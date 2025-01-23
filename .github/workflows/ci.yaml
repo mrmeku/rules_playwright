@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   test:
-    uses: bazel-contrib/.github/.github/workflows/bazel.yaml@v6
+    uses: bazel-contrib/.github/.github/workflows/bazel.yaml@646899086d7aaee8e532540480f3e91e00596234 # 11 Dec 2024
     with:
       folders: |
         [
@@ -27,6 +27,11 @@ jobs:
         ]
       exclude: |
         [
+          {"os": "windows-latest"},
+          # TODO: Get cross compiles of rust binaries working on linux
+          # They are mac only right now
+          {"folder": ".", "os": "ubuntu-latest"},
+          {"bazelversion": "6.0.0"},
           {"folder": ".", "bzlmodEnabled": false}
         ]
   pre-commit:
