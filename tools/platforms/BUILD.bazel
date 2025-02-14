@@ -1,3 +1,5 @@
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+
 package(default_visibility = ["//visibility:public"])
 
 config_setting(
@@ -31,3 +33,56 @@ config_setting(
         "@platforms//os:macos",
     ],
 )
+
+MACOS_VERSIONS = [
+    "10.13",
+    "10.14",
+    "10.15",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+]
+
+string_flag(
+    name = "macos_version",
+    # TODO: consider how to make this default configurable.
+    build_setting_default = "12",
+    values = MACOS_VERSIONS,
+)
+
+[
+    config_setting(
+        name = "mac{}".format(version),
+        flag_values = {
+            ":macos_version": version,
+        },
+    )
+    for version in MACOS_VERSIONS
+]
+
+LINUX_DISTROS = [
+    "debian11",
+    "debian12",
+    "ubuntu20.04",
+    "ubuntu22.04",
+    "ubuntu24.04",
+]
+
+string_flag(
+    name = "linux_distro",
+    # TODO: consider how to make this default configurable.
+    build_setting_default = "debian11",
+    values = LINUX_DISTROS,
+)
+
+[
+    config_setting(
+        name = "linux_distro_{}".format(distro),
+        values = {
+            "linux_distro": distro,
+        },
+    )
+    for distro in LINUX_DISTROS
+]

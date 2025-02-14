@@ -13,12 +13,12 @@ playwright_bin.playwright_test(
         "package.json",
         "tests/example.spec.js",
         "//:node_modules/@playwright/test",
-        "@playwright//:chromium-headless-shell-mac14-arm64",
-        "@playwright//:firefox-mac14-arm64",
-        "@playwright//:webkit-mac14-arm64",
+        "@playwright//:chromium-headless-shell",
+        "@playwright//:firefox",
+        "@playwright//:webkit",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell-mac14-arm64)/../",
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
     },
 )
 
@@ -32,10 +32,10 @@ playwright_bin.playwright_test(
         "package.json",
         "tests/example.spec.js",
         "//:node_modules/@playwright/test",
-        "@playwright//:chromium-headless-shell-mac14-arm64",
+        "@playwright//:chromium-headless-shell",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell-mac14-arm64)/../",
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
     },
 )
 
@@ -49,10 +49,10 @@ playwright_bin.playwright_test(
         "package.json",
         "tests/example.spec.js",
         "//:node_modules/@playwright/test",
-        "@playwright//:firefox-mac14-arm64",
+        "@playwright//:firefox",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:firefox-mac14-arm64)/../",
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:firefox)/../",
     },
 )
 
@@ -66,9 +66,9 @@ playwright_bin.playwright_test(
         "package.json",
         "tests/example.spec.js",
         "//:node_modules/@playwright/test",
-        "@playwright//:webkit-mac14-arm64",
+        "@playwright//:webkit",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:webkit-mac14-arm64)/../",
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:webkit)/../",
     },
 )

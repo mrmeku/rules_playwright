@@ -6,12 +6,10 @@ package(default_visibility = ["//visibility:public"])
 rust_binary(
     name = "browser_workspace_gen",
     srcs = glob([
-        "src/*.rs",
+        "src/**/*.rs",
     ]),
     compile_data = [
-        "src/browsers.json",
         "src/download_paths.json",
-        "src/unzip_browser.bzl",
     ],
     deps = all_crate_deps(
         normal = True,

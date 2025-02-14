@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use crate::{
-    browsers::Browsers,
+    browsers::{Browser, Browsers},
     download_paths::{DownloadPaths, Platform},
 };
 
@@ -11,6 +11,9 @@ pub struct BrowserTarget {
     pub http_file_path: String,
     pub label: String,
     pub output_dir: String,
+    pub platform: Platform,
+    pub browser: Browser,
+    pub browser_name: String,
 }
 
 #[derive(Debug, Serialize)]
@@ -73,6 +76,9 @@ pub fn get_browser_rules(
                                 output_dir: format!(
                                     "{platform_str}/{snake_case_browser_name}-{revision}"
                                 ),
+                                browser_name,
+                                platform: platform.clone(),
+                                browser: browser.name.clone(),
                             })
                         }
                         _ => None,

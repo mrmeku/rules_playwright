@@ -1,7 +1,8 @@
-use std::{fs, path::PathBuf};
+use std::path::PathBuf;
 mod browser_targets;
 mod browsers;
 mod download_paths;
+mod platform_groups;
 mod templates;
 use browser_targets::{get_browser_rules, HttpFile};
 use browsers::Browsers;
@@ -34,11 +35,7 @@ pub fn main() -> std::io::Result<()> {
 
     match flags.subcommand {
         flags::RulesPlaywrightCmd::Workspace(_workspace) => {
-            templates::write_build_file(&out_dir, &browser_rules)?;
-            fs::write(
-                out_dir.join("unzip_browser.bzl"),
-                include_str!("unzip_browser.bzl"),
-            )?;
+            templates::write_workspace(&out_dir, browser_rules)?;
         }
         flags::RulesPlaywrightCmd::HttpFiles(_http_files) => {
             let http_files: Vec<HttpFile> = browser_rules.into_iter().map(|b| b.into()).collect();
