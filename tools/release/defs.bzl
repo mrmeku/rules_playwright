@@ -39,6 +39,17 @@ def rust_binary(name, visibility = [], **kwargs):
                 crate_name = name,
                 platform = release_platform,
                 target_compatible_with = target_compatible_with,
+                rustc_flags = select({
+                    "//tools/release": [
+                        "-Ccodegen-units=1",
+                        "-Cpanic=abort",
+                        "-Copt-level=z",
+                        "-Cstrip=symbols",
+                    ],
+                    "//conditions:default": [
+                        "-Copt-level=0",
+                    ],
+                }),
                 tags = ["manual"],
                 **kwargs
             )

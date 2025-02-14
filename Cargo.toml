@@ -6,3 +6,9 @@ members = ["playwright/tools/browser_workspace_gen"]
 edition = "2021"
 rust-version = "1.84.0"
 readme = "README.md"
+
+[profile.release]
+opt-level = "z"  # Optimize for size
+strip = true  # Automatically strip debug symbols from the binary
+lto = true    # Enable Link Time Optimization (LTO)
+codegen-units = 1 # Reduce Parallel Code Generation Units to Increase Optimization
