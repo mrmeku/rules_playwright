@@ -110,8 +110,8 @@ string_flag(
 You can override these defaults using Bazel's command line flags:
 
 ```bash
-bazel test //... --//path/to:macos_version=13
-bazel test //... --//path/to:linux_distro=ubuntu22.04
+bazel test //... --@rules_playwright//:macos_version=13
+bazel test //... --@rules_playwright//:linux_distro=ubuntu22.04
 ```
 
 ## Notes
