@@ -23,7 +23,8 @@ jobs:
       folders: |
         [
           ".",
-          "e2e/smoke"
+          "e2e/smoke",
+          "examples/rules_js"
         ]
       exclude: |
         [
