@@ -1,76 +1,125 @@
-# Rules playwright
+# rules_playwright
 
-## Toolchain details
+Bazel rules for downloading and using Playwright browsers. These rules provide access to browser binaries that can be used with other rule sets like `aspect_rules_js` (see `examples/rules_js`)
 
-For every browser within playwright-core/browsers.json we create an http_file to download the zip.
+## Overview
 
-We do not extract the zip since we need to set the directory name to what playwrite expects:
-`${browserName}-${revisionNumber}`
+`rules_playwright` provides Bazel targets for downloading Playwright browser binaries for use in your Bazel builds. It handles platform-specific downloads and configuration, making it easier to integrate browser-based testing into your Bazel workspace.
 
-Each toolchain depends on the downloaded browsers it wants to extract.
+## Setup
 
-For example, the toolchain for `mac-11-arm64` will depend on:
+Add the following to your `MODULE.bazel` file:
 
-- `@rules_playwrite_chromium_mac-11-arm64//file`
-- `@rules_playwrite_firefox_mac-11-arm64//file`
-- `@rules_playwrite_webkit_mac-11-arm64//file`
-- `@rules_playwrite_ffmpeg_mac-11-arm64//file`
-- `@rules_playwrite_firefox-beta_mac-11-arm64//file`
-- `@rules_playwmrmekuchromium-tip-of-tree_mac-11-arm64//file`
+```python
+bazel_dep(name = "rules_playwright", version = "0.0.0")
 
-It will extract these browsers using `extract_browser`'s to the appropriate directory structure
-
-```
-/@playwrite-toolchain-mac-11-arm64
-   /chromium-CHROMIUM_REVISION
-   /firefox-FIREFOX_REVISION
-   /webkit-WEBKIT_REVISION
-   /ffmpeg-FFMPEG_REVISION
-   /firefox-beta-FIREFOX_BETA_REVISION
-   /chromium-tip-of-tree-CHROMIUM_TIP_OF_TREE_REVISION
+playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
+playwright.repo(
+    name = "playwright",
+    playwright_version = "MATCH_YOUR_PACKAGE_JSON",
+)
+use_repo(playwright, "playwright")
 ```
 
-Using the environment variable `PLAYWRIGHT_BROWSERS_PATH` playwright will be informed of the path to this directory and find the browsers it needs.
+## Usage
 
-NOTE: Playwright uses two marker files `INSTALLATION_COMPLETE` and `DEPENDENCIES_VALIDATED` which may need to be created to trick it into thinking validation has been done.
+Here's an example of how to use `rules_playwright` with Playwright's test runner:
 
-It is important to ensure that the revision numbers that a specific version of playwright expects are present within the toolchain. Therefore users must provide the version of playwright to the toolchain so that it can fetch the corresponding browsers.json
+```python
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:playwright/package_json.bzl", playwright_bin = "bin")
 
-Thus the toolchain accepts one of two attributes
-mrmeku
+npm_link_all_packages(name = "node_modules")
 
-- `browser_json_path`: Path to vendored in browsers.json file
-- `playwright_version`: Version of playwright found in package.json file
-
-```
-playwright_toolchains(
-   name = "playwright",
-   playwright_version = "1.43.1",
+# Run tests in all browsers
+playwright_bin.playwright_test(
+    name = "all",
+    args = [
+        "test",
+        "--browser=all",
+    ],
+    data = [
+        "package.json",
+        "tests/example.spec.js",
+        "//:node_modules/@playwright/test",
+        "@playwright//:chromium-headless-shell",
+        "@playwright//:firefox",
+        "@playwright//:webkit",
+    ],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
+    },
+    tags = ["no-sandbox"],  # Required for Firefox on macOS
 )
 ```
 
-Make sure the toolchain mirrors the directory structure under
-/Users/mrmeku/Library/Caches/ms-playwright
-chromium-1148/
-DEPENDENCIES_VALIDATED: EMPTY FILE
-INSTALLATION_COMPLETE: EMPTY MARKER FILE
-chrome-mac: actual dir
-ffmpeg-1010
-webkit-2104
-chromium_headless_shell-1148
-firefox-1466
+## Available Browsers and Executables
 
-It will consume the npm dependency of playwright
-to get the json file at
-node_modules/.pnpm/playwright-core\@1.49.1/node_modules/playwright-core/browsers.json
-and generate the external workspace needed by
-the toolchain.
+The following targets are available within the generated repository.
 
-Steps are the following
+- `@playwright//:chromium` - Standard Chromium browser
+- `@playwright//:chromium-headless-shell` - Headless Chromium shell
+- `@playwright//:chromium-tip-of-tree` - Latest Chromium build
+- `@playwright//:firefox` - Standard Firefox browser
+- `@playwright//:firefox-beta` - Firefox Beta version
+- `@playwright//:webkit` - WebKit browser
+- `@playwright//:android` - Android browser support
+- `@playwright//:ffmpeg` - FFmpeg for video recording
 
-- Copy browsers.json manually to repo
-- Handcode what generated workspace should look like
-- Create toolchain to consume generated workspace
-- Make sure that playwright can run with toolchain
-- Create rust binary which generates the workspace
-- Generated workspace becomes a golden file test / reference
+Note `@playwright` is merely the default workspace name. Your repository name will be whatever you declare in your MODULE.bazel file.
+
+## Configuration
+
+### Platform Configuration
+
+`rules_playwright` provides configuration flags to specify the target platform version for browser downloads.
+
+Add the following to your `BUILD.bazel` file:
+
+```python
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+
+string_flag(
+    name = "macos_version",
+    build_setting_default = "12",
+    values = [
+        "10.13",
+        "10.14",
+        "10.15",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+    ],
+)
+
+string_flag(
+    name = "linux_distro",
+    build_setting_default = "debian11",
+    values = [
+        "debian11",
+        "debian12",
+        "ubuntu20.04",
+        "ubuntu22.04",
+        "ubuntu24.04",
+    ],
+)
+```
+
+You can override these defaults using Bazel's command line flags:
+
+```bash
+bazel test //... --//path/to:macos_version=13
+bazel test //... --//path/to:linux_distro=ubuntu22.04
+```
+
+## Notes
+
+- Firefox requires the `no-sandbox` tag when running on macOS.
+- The `PLAYWRIGHT_BROWSERS_PATH` environment variable must be set to the directory containing the browser binaries. You can use the make variable `rootpath` on any browser followed by `../`.
+- Browser selection is handled automatically based on the current platform and specified version flags. Make sure you set the appropriate flag for your test exec platform.
+
+## Contributing
+
+Contributions are welcome! Plz.
