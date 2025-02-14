@@ -1,6 +1,12 @@
 {
   "homepage": "https://github.com/mrmeku/rules_playwright",
-  "maintainers": [],
+  "maintainers": [
+    {
+      "name": "Daniel Muller",
+      "email": "mrmeku@gmail.com",
+      "github": "mrmeku"
+    }
+  ],
   "repository": ["github:mrmeku/rules_playwright"],
   "versions": [],
   "yanked_versions": {}

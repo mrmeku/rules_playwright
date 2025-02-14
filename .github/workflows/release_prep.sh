@@ -16,11 +16,17 @@ SHA=$(shasum -a 256 $ARCHIVE | awk '{print $1}')
 cat << EOF
 ## Using Bzlmod with Bazel 6 or greater
 
-1. (Bazel 6 only) Enable with \`common --enable_bzlmod\` in \`.bazelrc\`.
-2. Add to your \`MODULE.bazel\` file:
+Add to your \`MODULE.bazel\` file:
 
 \`\`\`starlark
 bazel_dep(name = "rules_playwright", version = "${TAG:1}")
+
+playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
+playwright.repo(
+    name = "playwright",
+    playwright_version = "1.49.1",
+)
+use_repo(playwright, "playwright")
 \`\`\`
 
 ## Using WORKSPACE
