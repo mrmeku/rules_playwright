@@ -74,7 +74,8 @@ pub fn get_browser_rules(
                                 http_file_path: template.replace("%s", revision),
                                 label: format!("{browser_name}-{platform_str}"),
                                 output_dir: format!(
-                                    "{platform_str}/{snake_case_browser_name}-{revision}"
+                                    "{platform_str}/{snake_case_browser_name}-{}",
+                                    browser.revision
                                 ),
                                 browser_name,
                                 platform: platform.clone(),

@@ -20,6 +20,10 @@ playwright_bin.playwright_test(
     env = {
         "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
     },
+    tags = [
+        # Firefox does not run on mac with sandboxing
+        "no-sandbox",
+    ],
 )
 
 playwright_bin.playwright_test(
@@ -54,6 +58,10 @@ playwright_bin.playwright_test(
     env = {
         "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:firefox)/../",
     },
+    tags = [
+        # Firefox does not run on mac with sandboxing
+        "no-sandbox",
+    ],
 )
 
 playwright_bin.playwright_test(

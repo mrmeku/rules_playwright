@@ -43,7 +43,7 @@ register_toolchains(
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.1.2", dev_dependency = True)
 
-playwright = use_extension("//playwright:extensions.bzl", "playwright")
+playwright = use_extension("//playwright:extensions.bzl", "playwright", dev_dependency = True)
 playwright.repo(
     name = "playwright",
     playwright_version = "1.49.1",
