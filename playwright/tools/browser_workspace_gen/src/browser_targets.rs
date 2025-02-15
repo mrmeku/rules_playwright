@@ -1,18 +1,18 @@
 use serde::Serialize;
 
 use crate::{
-    browsers::{Browser, Browsers},
+    browsers::{BrowserData, Browsers},
     download_paths::{DownloadPaths, Platform},
 };
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct BrowserTarget {
     pub http_file_workspace_name: String,
     pub http_file_path: String,
     pub label: String,
     pub output_dir: String,
     pub platform: Platform,
-    pub browser: Browser,
+    pub browser: String,
     pub browser_name: String,
 }
 
@@ -36,9 +36,30 @@ pub fn get_browser_rules(
     browsers: Browsers,
     download_paths: DownloadPaths,
 ) -> Vec<BrowserTarget> {
+    let has_headles = browsers
+        .browsers
+        .iter()
+        .any(|b| b.name.ends_with("-headless-shell"));
+
     let mut browser_rules: Vec<BrowserTarget> = browsers
         .browsers
         .into_iter()
+        .flat_map(|browser| {
+            if has_headles {
+                return vec![browser];
+            }
+            // Handle headless browser variants
+            match browser.name.as_str() {
+                "chromium" | "chromium-tip-of-tree" => vec![
+                    browser.clone(),
+                    BrowserData {
+                        name: format!("{}-headless-shell", browser.name),
+                        ..browser
+                    },
+                ],
+                _ => vec![browser],
+            }
+        })
         .flat_map(|browser| {
             let paths = download_paths.paths.get(&browser.name);
             if paths.is_none() {
@@ -86,6 +107,7 @@ pub fn get_browser_rules(
                     }
                 })
                 .collect();
+
             browser_rules
         })
         .collect();

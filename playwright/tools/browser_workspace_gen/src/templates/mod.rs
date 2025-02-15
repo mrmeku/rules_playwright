@@ -1,8 +1,7 @@
 use std::{collections::HashMap, io, path::Path};
 
 use crate::{
-    browser_targets::BrowserTarget, browsers::Browser, download_paths::Platform,
-    platform_groups::PlatformGroup,
+    browser_targets::BrowserTarget, download_paths::Platform, platform_groups::PlatformGroup,
 };
 
 mod aliases;
@@ -12,7 +11,7 @@ mod root;
 pub fn write_workspace(out_dir: &Path, browser_targets: Vec<BrowserTarget>) -> io::Result<()> {
     browsers::write_build_file(out_dir, &browser_targets)?;
 
-    let mut root_targets: HashMap<Browser, RootTarget> = HashMap::new();
+    let mut root_targets: HashMap<String, RootTarget> = HashMap::new();
     for target in browser_targets {
         let root_target = root_targets
             .entry(target.browser)

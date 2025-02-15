@@ -5,14 +5,12 @@ package(default_visibility = ["//visibility:public"])
 
 string_flag(
     name = "macos_version",
-    # TODO: consider how to make this default configurable.
-    build_setting_default = "12",
+    build_setting_default = "14",
     values = MACOS_VERSIONS,
 )
 
 string_flag(
     name = "linux_distro",
-    # TODO: consider how to make this default configurable.
-    build_setting_default = "debian11",
+    build_setting_default = "ubuntu24.04",
     values = LINUX_DISTROS,
 )

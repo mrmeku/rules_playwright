@@ -37,6 +37,7 @@ def _extension_impl(module_ctx):
                 registrations[repo.name] = []
             registrations[repo.name].append(repo.playwright_version)
     for name, versions in registrations.items():
+        print(name)
         if len(versions) > 1:
             # TODO: should be semver-aware, using MVS
             playwright_version = sorted(versions, reverse = True)[0]
@@ -71,7 +72,7 @@ def _extension_impl(module_ctx):
             ],
         )
         if result.return_code != 0:
-            fail("http-files command failed")
+            fail("http-files command failed", result.stdout, result.stderr)
 
         for http_file_json in json.decode(result.stdout):
             http_file(

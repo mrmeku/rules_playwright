@@ -1,4 +1,4 @@
-use crate::{browsers::Browser, download_paths::PlatformBase};
+use crate::download_paths::PlatformBase;
 use askama::Template;
 use std::{collections::HashMap, fs, io, path::Path};
 
@@ -39,7 +39,7 @@ struct AliasTargetSelect {
 
 pub fn write_build_file(
     out_dir: &Path,
-    root_targets: &HashMap<Browser, RootTarget>,
+    root_targets: &HashMap<String, RootTarget>,
 ) -> io::Result<()> {
     let template = AliasBuildFileTemplate {
         alias_targets: root_targets

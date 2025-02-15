@@ -1,4 +1,3 @@
-use crate::browsers::Browser;
 use askama::Template;
 use std::{collections::HashMap, fs, io, path::Path};
 
@@ -41,7 +40,7 @@ struct SelectPlatformGroup {
 
 pub fn write_build_file(
     out_dir: &Path,
-    root_targets: &HashMap<Browser, RootTarget>,
+    root_targets: &HashMap<String, RootTarget>,
 ) -> io::Result<()> {
     let select_targets: Vec<SelectTarget> = root_targets
         .iter()

@@ -8,7 +8,7 @@ module(
 
 bazel_dep(name = "bazel_skylib", version = "1.4.1")
 bazel_dep(name = "platforms", version = "0.0.10")
-bazel_dep(name = "aspect_bazel_lib", version = "2.11.0")
+bazel_dep(name = "aspect_bazel_lib", version = "2.11.0", dev_dependency = True)
 
 bazel_dep(name = "toolchains_musl", version = "0.1.20", dev_dependency = True)
 
@@ -42,10 +42,15 @@ bazel_dep(name = "buildifier_prebuilt", version = "6.1.2", dev_dependency = True
 
 playwright = use_extension("//playwright:extensions.bzl", "playwright", dev_dependency = True)
 playwright.repo(
-    name = "playwright",
+    name = "playwright-1.49.1",
     playwright_version = "1.49.1",
 )
-use_repo(playwright, "playwright")
+use_repo(playwright, "playwright-1.49.1")
+playwright.repo(
+    name = "playwright-1.50.1",
+    playwright_version = "1.50.1",
+)
+use_repo(playwright, "playwright-1.50.1")
 
 bazel_dep(
     name = "rules_rust",

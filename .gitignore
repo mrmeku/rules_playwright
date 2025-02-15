@@ -3,7 +3,7 @@ bazel-*
 .idea/
 .ijwb/
 node_modules
-
+out/
 # Added by cargo
 
 /target

@@ -2,13 +2,11 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::browsers::Browser;
-
 // Main structure representing the entire JSON
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DownloadPaths {
     #[serde(flatten)]
-    pub paths: HashMap<Browser, BuildPaths>,
+    pub paths: HashMap<String, BuildPaths>,
 }
 
 #[derive(Debug, Clone, Hash, Eq, PartialEq, Serialize, Deserialize)]
