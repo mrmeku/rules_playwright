@@ -3,16 +3,20 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages(name = "node_modules")
 
+DATA = [
+    "package.json",
+    "playwright.config.ts",
+    "tests/example.spec.ts",
+    "//:node_modules/@playwright/test",
+]
+
 playwright_bin.playwright_test(
     name = "all",
     args = [
         "test",
         "--browser=all",
     ],
-    data = [
-        "package.json",
-        "tests/example.spec.js",
-        "//:node_modules/@playwright/test",
+    data = DATA + [
         "@playwright//:chromium-headless-shell",
         "@playwright//:firefox",
         "@playwright//:webkit",
@@ -32,10 +36,7 @@ playwright_bin.playwright_test(
         "test",
         "--browser=chromium",
     ],
-    data = [
-        "package.json",
-        "tests/example.spec.js",
-        "//:node_modules/@playwright/test",
+    data = DATA + [
         "@playwright//:chromium-headless-shell",
     ],
     env = {
@@ -49,10 +50,7 @@ playwright_bin.playwright_test(
         "test",
         "--browser=firefox",
     ],
-    data = [
-        "package.json",
-        "tests/example.spec.js",
-        "//:node_modules/@playwright/test",
+    data = DATA + [
         "@playwright//:firefox",
     ],
     env = {
@@ -70,10 +68,7 @@ playwright_bin.playwright_test(
         "test",
         "--browser=webkit",
     ],
-    data = [
-        "package.json",
-        "tests/example.spec.js",
-        "//:node_modules/@playwright/test",
+    data = DATA + [
         "@playwright//:webkit",
     ],
     env = {
