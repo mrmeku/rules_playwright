@@ -48,7 +48,6 @@ pub enum Platform {
     Mac14Arm64,
     Mac15,
     Mac15Arm64,
-    Win64,
     #[serde(rename = "<unknown>", other)]
     Unknown,
 }
@@ -74,7 +73,6 @@ impl PlatformBase for Platform {
             Platform::Mac13 | Platform::Mac13Arm64 => "mac13",
             Platform::Mac14 | Platform::Mac14Arm64 => "mac14",
             Platform::Mac15 | Platform::Mac15Arm64 => "mac15",
-            Platform::Win64 => "win",
             Platform::Unknown => "<unknown>",
         }
     }

@@ -46,7 +46,7 @@ config_setting(
 
 [
     config_setting(
-        name = "{}".format(distro),
+        name = distro,
         flag_values = {
             "//:linux_distro": distro,
         },
