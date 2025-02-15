@@ -1,5 +1,6 @@
 load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 
 config_setting(
     name = "release",
@@ -51,4 +52,17 @@ write_source_file(
     in_file = ":release_artifacts",
     out_file = "artifacts",
     tags = ["manual"],
+)
+
+native_binary(
+    name = "browser_workspace_gen",
+    src = select(
+        {
+            "@rules_playwright//tools/platforms:macos_x86_64": ":artifacts/browser_workspace_gen-x86_64-apple-darwin",
+            "@rules_playwright//tools/platforms:macos_arm64": ":artifacts/browser_workspace_gen-arm64-apple-darwin",
+            "@rules_playwright//tools/platforms:linux_x86_64": ":artifacts/browser_workspace_gen-x86_64-unknown-linux",
+            "@rules_playwright//tools/platforms:linux_arm64": ":artifacts/browser_workspace_gen-arm64-unknown-linux",
+        },
+    ),
+    out = "browser_workspace_gen",
 )

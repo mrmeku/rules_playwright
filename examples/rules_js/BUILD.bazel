@@ -1,5 +1,5 @@
+load("@npm//:@playwright/test/package_json.bzl", playwright_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
-load("@npm//:playwright/package_json.bzl", playwright_bin = "bin")
 
 npm_link_all_packages(name = "node_modules")
 

@@ -7,6 +7,11 @@ local_path_override(
 playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
 playwright.repo(
     name = "playwright",
+    integrity_map = {
+        "firefox-mac14-arm64": "sha256-+FLEjmC1ypnAI/DQY4uJhtx3kQPN4mX8LC0TWEt9x9Y=",
+        "chromium-headless-shell-mac14-arm64": "sha256-pJnv5Nfost7BtlSlG1JPzpQHgzXlxerZHyDoV3/1NM0=",
+        "webkit-mac14-arm64": "sha256-RiHUDBPVDRlnkgHXzaoeQeAxeSvMiWNOphl/GlEj5aA=",
+    },
     playwright_version = "1.50.1",
 )
 use_repo(playwright, "playwright")

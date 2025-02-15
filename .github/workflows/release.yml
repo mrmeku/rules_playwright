@@ -22,3 +22,8 @@ jobs:
         with:
           prerelease: false
           body_path: release_notes.txt
+          # Use GH feature to populate the changelog automatically
+          generate_release_notes: true
+          files: |
+            rules_playwright-*.tar.gz
+          fail_on_unmatched_files: true

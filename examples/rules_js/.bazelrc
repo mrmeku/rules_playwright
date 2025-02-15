@@ -1,1 +1,2 @@
 startup --host_jvm_args=-DBAZEL_TRACK_SOURCE_DIRECTORIES=1
+common --@rules_playwright//:macos_version=14

@@ -1,8 +1,7 @@
 {
   "devDependencies": {
     "@playwright/test": "1.50.1",
-    "@types/node": "^22.10.7",
-    "playwright": "1.50.1"
+    "@types/node": "^22.10.7"
   },
   "pnpm": {
     "onlyBuiltDependencies": []

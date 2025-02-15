@@ -11,7 +11,7 @@ effectively overriding the default named toolchain due to toolchain resolution p
 """
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-load("//playwright/private:util.bzl", "get_browser_workspace_gen_path")
+load("//playwright/private:util.bzl", "get_browser_workspace_gen_path", "get_browsers_json_path")
 load(":repositories.bzl", "playwright_repository")
 
 _DEFAULT_NAME = "playwright"
@@ -21,75 +21,65 @@ playwright_repo = tag_class(attrs = {
 Base name for generated repositories, allowing more than one playwright toolchain to be registered.
 Overriding the default is only permitted in the root module.
 """, default = _DEFAULT_NAME),
-    "playwright_version": attr.string(doc = "Explicit version of playwright.", mandatory = True),
+    "playwright_version": attr.string(doc = "Explicit version of playwright to download browsers.json from"),
+    "browsers_json": attr.label(doc = "Alternative to playwright_version. Skips downloading from unpkg", allow_single_file = True),
+    "integrity_map": attr.string_dict(
+        default = {},
+        doc = "Mapping from brower target to integrity hash",
+    ),
 })
 
 def _extension_impl(module_ctx):
-    registrations = {}
     for mod in module_ctx.modules:
         for repo in mod.tags.repo:
-            if repo.name != _DEFAULT_NAME and not mod.is_root:
+            name = repo.name
+
+            if name != _DEFAULT_NAME and not mod.is_root:
                 fail("""\
                 Only the root module may override the default name for the playwright toolchain.
                 This prevents conflicting registrations in the global namespace of external repos.
                 """)
-            if repo.name not in registrations.keys():
-                registrations[repo.name] = []
-            registrations[repo.name].append(repo.playwright_version)
-    for name, versions in registrations.items():
-        print(name)
-        if len(versions) > 1:
-            # TODO: should be semver-aware, using MVS
-            playwright_version = sorted(versions, reverse = True)[0]
 
-            # buildifier: disable=print
-            print("NOTE: playwright toolchain {} has multiple versions {}, selected {}".format(name, versions, playwright_version))
-        else:
-            playwright_version = versions[0]
+            if not repo.playwright_version and not repo.browsers_json:
+                fail("""\
+                One of playwright_version or browsers_json must be specified.
+                """)
 
-        browsers_json_path = "browsers.{playwright_version}.json"
+            browser_workspace_gen = get_browser_workspace_gen_path(module_ctx)
+            module_ctx.watch(browser_workspace_gen)
 
-        # Step 1: use module_ctx exec to get the list of browsers to iterate over and declare with http file
-        module_ctx.download(
-            url = "https://unpkg.com/playwright-core@{}/browsers.json".format(
-                playwright_version,
-            ),
-            # Make the output be versioned
-            output = browsers_json_path,
-        )
-
-        browser_workspace_gen = get_browser_workspace_gen_path(module_ctx)
-        module_ctx.watch(browser_workspace_gen)
-
-        result = module_ctx.execute(
-            [
-                browser_workspace_gen,
-                "http-files",
-                "--browser-json-path",
-                browsers_json_path,
-                "--workspace-name",
-                name,
-            ],
-        )
-        if result.return_code != 0:
-            fail("http-files command failed", result.stdout, result.stderr)
-
-        for http_file_json in json.decode(result.stdout):
-            http_file(
-                name = http_file_json["name"],
-                urls = [
-                    "https://playwright.azureedge.net/{}".format(http_file_json["path"]),
-                    "https://playwright-akamai.azureedge.net/{}".format(http_file_json["path"]),
-                    "https://playwright-verizon.azureedge.net/{}".format(http_file_json["path"]),
+            # Step 1: use module_ctx exec to get the list of browsers to iterate over and declare with http file
+            result = module_ctx.execute(
+                [
+                    browser_workspace_gen,
+                    "http-files",
+                    "--browser-json-path",
+                    get_browsers_json_path(module_ctx, repo.playwright_version, repo.browsers_json),
+                    "--workspace-name",
+                    name,
                 ],
             )
+            if result.return_code != 0:
+                fail("http-files command failed", result.stdout, result.stderr)
 
-        # Step 2: generate repository which references said http_files
-        playwright_repository(
-            name = name,
-            playwright_version = playwright_version,
-            user_workspace_name = name,
-        )
+            for http_file_json in json.decode(result.stdout):
+                http_file(
+                    name = http_file_json["name"],
+                    integrity = repo.integrity_map.get(http_file_json["name"], None),
+                    urls = [
+                        "https://playwright.azureedge.net/{}".format(http_file_json["path"]),
+                        "https://playwright-akamai.azureedge.net/{}".format(http_file_json["path"]),
+                        "https://playwright-verizon.azureedge.net/{}".format(http_file_json["path"]),
+                    ],
+                )
+
+            # Step 2: generate repository which references said http_files
+            playwright_repository(
+                name = name,
+                playwright_version = repo.playwright_version,
+                browsers_json = repo.browsers_json,
+                user_workspace_name = name,
+            )
 
 playwright = module_extension(
     implementation = _extension_impl,
