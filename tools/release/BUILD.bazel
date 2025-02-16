@@ -2,6 +2,8 @@ load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 
+package(default_visibility = ["//visibility:public"])
+
 config_setting(
     name = "release",
     values = {
@@ -17,7 +19,6 @@ config_setting(
             "@platforms//cpu:" + cpu,
             "//tools/linkers:musl" if os == "linux" else "//tools/linkers:unknown",
         ],
-        visibility = ["//playwright/tools:__subpackages__"],
     )
     for os in [
         "linux",
@@ -30,18 +31,18 @@ config_setting(
 ]
 
 LINUX_ARTIFACTS = [
-    "//playwright/tools/browser_workspace_gen:browser_workspace_gen_linux",
+    "//playwright/private/cli:cli_linux",
 ]
 
 MACOS_ARTIFACTS = [
-    "//playwright/tools/browser_workspace_gen:browser_workspace_gen_macos",
+    "//playwright/private/cli:cli_macos",
 ]
 
 copy_to_directory(
     name = "release_artifacts",
     srcs = LINUX_ARTIFACTS + MACOS_ARTIFACTS,
     out = "artifacts",
-    root_paths = ["playwright/tools/browser_workspace_gen"],
+    root_paths = ["playwright/private/cli"],
     tags = ["manual"],
 )
 
@@ -55,14 +56,14 @@ write_source_file(
 )
 
 native_binary(
-    name = "browser_workspace_gen",
+    name = "cli",
     src = select(
         {
-            "@rules_playwright//tools/platforms:macos_x86_64": ":artifacts/browser_workspace_gen-x86_64-apple-darwin",
-            "@rules_playwright//tools/platforms:macos_arm64": ":artifacts/browser_workspace_gen-arm64-apple-darwin",
-            "@rules_playwright//tools/platforms:linux_x86_64": ":artifacts/browser_workspace_gen-x86_64-unknown-linux-musl",
-            "@rules_playwright//tools/platforms:linux_arm64": ":artifacts/browser_workspace_gen-arm64-unknown-linux-musl",
+            "@rules_playwright//tools/platforms:macos_x86_64": ":artifacts/cli-x86_64-apple-darwin",
+            "@rules_playwright//tools/platforms:macos_arm64": ":artifacts/cli-arm64-apple-darwin",
+            "@rules_playwright//tools/platforms:linux_x86_64": ":artifacts/cli-x86_64-unknown-linux-musl",
+            "@rules_playwright//tools/platforms:linux_arm64": ":artifacts/cli-arm64-unknown-linux-musl",
         },
     ),
-    out = "browser_workspace_gen",
+    out = "cli",
 )

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["playwright/tools/browser_workspace_gen"]
+members = ["playwright/private/cli"]
 
 [workspace.package]
 edition = "2021"

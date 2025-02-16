@@ -11,7 +11,7 @@ effectively overriding the default named toolchain due to toolchain resolution p
 """
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
-load("//playwright/private:util.bzl", "get_browser_workspace_gen_path", "get_browsers_json_path")
+load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
 load(":repositories.bzl", "playwright_repository")
 
 _DEFAULT_NAME = "playwright"
@@ -45,13 +45,13 @@ def _extension_impl(module_ctx):
                 One of playwright_version or browsers_json must be specified.
                 """)
 
-            browser_workspace_gen = get_browser_workspace_gen_path(module_ctx)
-            module_ctx.watch(browser_workspace_gen)
+            cli = get_cli_path(module_ctx)
+            module_ctx.watch(cli)
 
             # Step 1: use module_ctx exec to get the list of browsers to iterate over and declare with http file
             result = module_ctx.execute(
                 [
-                    browser_workspace_gen,
+                    cli,
                     "http-files",
                     "--browser-json-path",
                     get_browsers_json_path(module_ctx, repo.playwright_version, repo.browsers_json),

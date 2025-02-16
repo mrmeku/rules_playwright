@@ -23,7 +23,7 @@ def get_browsers_json_path(ctx, playwright_version, browsers_json):
         )
     return browsers_json_path
 
-def get_browser_workspace_gen_path(ctx):
+def get_cli_path(ctx):
     """Returns the platform-specific path to the browser workspace generator binary.
 
     Args:
@@ -40,4 +40,4 @@ def get_browser_workspace_gen_path(ctx):
     if "mac" in ctx.os.name:
         platform = "apple-darwin"
 
-    return ctx.path(Label("//tools/release:artifacts/browser_workspace_gen-{arch}-{platform}".format(platform = platform, arch = arch)))
+    return ctx.path(Label("//tools/release:artifacts/cli-{arch}-{platform}".format(platform = platform, arch = arch)))

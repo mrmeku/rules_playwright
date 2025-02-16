@@ -4,7 +4,7 @@ load("//tools/release:defs.bzl", "rust_binary")
 package(default_visibility = ["//visibility:public"])
 
 rust_binary(
-    name = "browser_workspace_gen",
+    name = "cli",
     srcs = glob([
         "src/**/*.rs",
     ]),

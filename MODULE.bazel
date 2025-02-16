@@ -103,7 +103,7 @@ crate.from_cargo(
     cargo_lockfile = "//:Cargo.lock",
     manifests = [
         "//:Cargo.toml",
-        "//playwright/tools/browser_workspace_gen:Cargo.toml",
+        "//playwright/private/cli:Cargo.toml",
     ],
 )
 use_repo(crate, "crate_index")
