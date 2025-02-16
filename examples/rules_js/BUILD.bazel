@@ -1,20 +1,39 @@
 load("@npm//:@playwright/test/package_json.bzl", playwright_bin = "bin")
 load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//:http-server/package_json.bzl", http_server_bin = "bin")
 
 npm_link_all_packages(name = "node_modules")
+
+filegroup(
+    name = "todomvc_files",
+    srcs = ["todomvc"],
+    visibility = ["//visibility:public"],
+)
 
 DATA = [
     "package.json",
     "playwright.config.ts",
     "tests/example.spec.ts",
     "//:node_modules/@playwright/test",
+    ":test-server",
 ]
 
+http_server_bin.http_server_binary(
+    name = "test-server",
+    copy_data_to_bin = False,
+    data = [
+        "//:todomvc_files",
+    ],
+    fixed_args = [
+        "$(rootpath //:todomvc_files)",
+        "-p 1234",
+    ],
+)
+
 playwright_bin.playwright_test(
-    name = "all",
+    name = "test",
     args = [
         "test",
-        "--browser=all",
     ],
     data = DATA + [
         "@playwright//:chromium-headless-shell",
@@ -22,6 +41,8 @@ playwright_bin.playwright_test(
         "@playwright//:webkit",
     ],
     env = {
+        "CI": "1",
+        "TEST_SERVER": "$(rootpath :test-server)",
         "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
     },
     tags = [
@@ -30,48 +51,19 @@ playwright_bin.playwright_test(
     ],
 )
 
-playwright_bin.playwright_test(
-    name = "chromium",
+playwright_bin.playwright_binary(
+    name = "ui",
     args = [
         "test",
-        "--browser=chromium",
+        "--project=chromium",
+        "--ui",
     ],
     data = DATA + [
+        "@playwright//:chromium",
         "@playwright//:chromium-headless-shell",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
-    },
-)
-
-playwright_bin.playwright_test(
-    name = "firefox",
-    args = [
-        "test",
-        "--browser=firefox",
-    ],
-    data = DATA + [
-        "@playwright//:firefox",
-    ],
-    env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:firefox)/../",
-    },
-    tags = [
-        # Firefox does not run on mac with sandboxing
-        "no-sandbox",
-    ],
-)
-
-playwright_bin.playwright_test(
-    name = "webkit",
-    args = [
-        "test",
-        "--browser=webkit",
-    ],
-    data = DATA + [
-        "@playwright//:webkit",
-    ],
-    env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:webkit)/../",
+        "TEST_SERVER": "$(rootpath :test-server)",
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium)/../",
     },
 )
