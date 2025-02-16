@@ -24,24 +24,9 @@ bazel_dep(name = "rules_playwright", version = "${TAG:1}")
 playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
 playwright.repo(
     name = "playwright",
-    playwright_version = "1.49.1",
+    playwright_version = "", # Match the exact version from your pnpm lock file of playwright-core
+    browser_json = "", # Or vendor the browsers.json file from playwright core into your repo
 )
 use_repo(playwright, "playwright")
 \`\`\`
-
-## Using WORKSPACE
-
-Paste this snippet into your \`WORKSPACE.bazel\` file:
-
-\`\`\`starlark
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-http_archive(
-    name = "rules_playwright",
-    sha256 = "${SHA}",
-    strip_prefix = "${PREFIX}",
-    url = "https://github.com/mrmeku/rules_playwright/releases/download/${TAG}/${ARCHIVE}",
-)
 EOF
-
-awk 'f;/--SNIP--/{f=1}' e2e/smoke/WORKSPACE.bazel
-echo "\`\`\`" 
