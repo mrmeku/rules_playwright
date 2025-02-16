@@ -48,8 +48,7 @@ impl Into<PlatformGroup> for Platform {
             | Platform::Mac12
             | Platform::Mac13
             | Platform::Mac14
-            | Platform::Mac15
-            | Platform::Win64 => PlatformGroup::MacosX86_64,
+            | Platform::Mac15 => PlatformGroup::MacosX86_64,
 
             // macOS ARM64 platforms
             Platform::Mac11Arm64
