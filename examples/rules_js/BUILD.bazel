@@ -10,14 +10,6 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-DATA = [
-    "package.json",
-    "playwright.config.ts",
-    "tests/example.spec.ts",
-    "//:node_modules/@playwright/test",
-    ":test-server",
-]
-
 http_server_bin.http_server_binary(
     name = "test-server",
     copy_data_to_bin = False,
@@ -30,20 +22,32 @@ http_server_bin.http_server_binary(
     ],
 )
 
+DATA = glob(["tests/**/*"]) + [
+    "package.json",
+    "playwright.config.ts",
+    "//:node_modules/@playwright/test",
+    ":test-server",
+]
+
+ENV = {
+    "TEST_SERVER": "$(rootpath :test-server)",
+    "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
+}
+
+ALL_BROWSERS = [
+    "@playwright//:chromium-headless-shell",
+    "@playwright//:firefox",
+    "@playwright//:webkit",
+]
+
 playwright_bin.playwright_test(
     name = "test",
     args = [
         "test",
     ],
-    data = DATA + [
-        "@playwright//:chromium-headless-shell",
-        "@playwright//:firefox",
-        "@playwright//:webkit",
-    ],
-    env = {
+    data = DATA + ALL_BROWSERS,
+    env = ENV | {
         "CI": "1",
-        "TEST_SERVER": "$(rootpath :test-server)",
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
     },
     tags = [
         # Firefox does not run on mac with sandboxing
@@ -59,11 +63,20 @@ playwright_bin.playwright_binary(
         "--ui",
     ],
     data = DATA + [
-        "@playwright//:chromium",
         "@playwright//:chromium-headless-shell",
     ],
-    env = {
-        "TEST_SERVER": "$(rootpath :test-server)",
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium)/../",
+    env = ENV,
+)
+
+playwright_bin.playwright_binary(
+    name = "update-snapshots",
+    args = [
+        "test",
+        "--update-snapshots",
+        "--grep=\"Snapshots\"",
+    ],
+    data = DATA + ALL_BROWSERS,
+    env = ENV | {
+        "UPDATE_SNAPSHOTS": "true",
     },
 )

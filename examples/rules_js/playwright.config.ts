@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from "@playwright/test";
+import { join } from "node:path";
 
 console.log(process.env.PWD, process.env.TEST_SERVER);
 
@@ -8,6 +9,18 @@ console.log(process.env.PWD, process.env.TEST_SERVER);
  */
 export default defineConfig({
   testDir: "./tests",
+
+  snapshotDir: process.env.UPDATE_SNAPSHOTS
+    ? join(process.env.BUILD_WORKSPACE_DIRECTORY!, "tests")
+    : "tests",
+
+  expect: {
+    toHaveScreenshot: {
+      animations: "disabled",
+      caret: "hide",
+      threshold: 0.02,
+    },
+  },
 
   /* Run tests in files in parallel */
   fullyParallel: true,
