@@ -11,7 +11,5 @@
         "BazelBuild.vscode-bazel" // bazel support
       ]
     }
-  },
-  // sets up pre-commit hooks
-  "postStartCommand": "pre-commit install"
+  }
 }
