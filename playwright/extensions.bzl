@@ -10,7 +10,7 @@ names (the latest version will be picked for each name) and can register them as
 effectively overriding the default named toolchain due to toolchain resolution precedence.
 """
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
 load(":repositories.bzl", "playwright_repository")
 
@@ -63,8 +63,20 @@ def _extension_impl(module_ctx):
                 fail("http-files command failed", result.stdout, result.stderr)
 
             for http_file_json in json.decode(result.stdout):
-                http_file(
+                http_archive(
                     name = http_file_json["name"],
+                    patch_cmds = [
+                        "touch DEPENDENCIES_VALIDATED",
+                        "touch INSTALLATION_COMPLETE",
+                    ],
+                    add_prefix = "browser",
+                    build_file_content = """\
+filegroup(
+    name = "file",
+    srcs = ["browser"],
+    visibility = ["//visibility:public"],
+)
+    """,
                     integrity = repo.integrity_map.get(http_file_json["name"], None),
                     urls = [
                         "https://playwright.azureedge.net/{}".format(http_file_json["path"]),

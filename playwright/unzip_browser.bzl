@@ -6,12 +6,7 @@ def _unzip_browser_impl(ctx):
     ctx.actions.run_shell(
         inputs = [ctx.file.browser],
         outputs = [output_dir],
-        command = "\
-mkdir -p {output_dir} && \
-touch {output_dir}/DEPENDENCIES_VALIDATED && \
-touch {output_dir}/INSTALLATION_COMPLETE && \
-unzip -q {browser} -d {output_dir}\
-".format(
+        command = "cp -r {browser}/* {output_dir}".format(
             output_dir = output_dir.path,
             browser = ctx.file.browser.path,
         ),
