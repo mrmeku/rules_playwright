@@ -38,33 +38,20 @@ http_file(
     url = "https://unpkg.com/playwright-core@1.51.0/browsers.json",
 )
 
-load("@rules_playwright//playwright:repositories.bzl", "playwright_repository")
+load("@rules_playwright//playwright:repositories.bzl", "define_browsers", "playwright_repository")
+
+define_browsers(
+    name = "browsers_index",
+    #browsers_json = "@browsers//file:downloaded",
+    browsers_json = "//:browsers.json",
+)
+
+load("@browsers_index//:browsers.bzl", "fetch_browsers")
+
+fetch_browsers()
 
 playwright_repository(
     name = "playwright",
     playwright_version = "1.51.0",
-    # browsers_json = "//:browsers.json",
-    user_workspace_name = "browser",
-)
-
-http_archive(
-    name = "browser-webkit-mac14-arm64",
-    patch_cmds = [
-        "touch DEPENDENCIES_VALIDATED",
-        "touch INSTALLATION_COMPLETE",
-    ],
-    add_prefix = "browser",
-    build_file_content = """\
-filegroup(
-name = "file",
-srcs = ["browser"],
-visibility = ["//visibility:public"],
-)
-""",
-    integrity = "sha256-XRpAhomjjaMf3EoNKcbS7UwHQY0QNOrqHT0CycwTGnI=",
-    urls = [
-        "https://playwright.azureedge.net/builds/webkit/2140/webkit-mac-14-arm64.zip",
-        "https://playwright-akamai.azureedge.net/builds/webkit/2140/webkit-mac-14-arm64.zip",
-        "https://playwright-verizon.azureedge.net/builds/webkit/2140/webkit-mac-14-arm64.zip",
-    ],
+    user_workspace_name = "main",
 )
