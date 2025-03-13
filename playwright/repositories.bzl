@@ -14,11 +14,25 @@ _ATTRS = {
 }
 
 def _define_browsers_impl(rctx):
+    result = rctx.execute(
+        [
+            get_cli_path(rctx),
+            "http-files",
+            "--browser-json-path",
+            rctx.path(rctx.attr.browsers_json),
+            "--workspace-name",
+            rctx.name,
+        ],
+    )
+    if result.return_code != 0:
+        fail("http-files command failed", result.stdout, result.stderr)
+
     result_build = [
         """load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")""",
         "def fetch_browsers():",
     ]
-    for http_file_json in json.decode(rctx.read(rctx.attr.browsers_json)):
+
+    for http_file_json in json.decode(result.stdout):
         result_build.append("""\
         http_archive(
             name = "{name}",
@@ -48,9 +62,12 @@ visibility = ["//visibility:public"],
     rctx.file("browsers.bzl", "\n".join(result_build))
     rctx.file("BUILD", "# no targets")
 
-define_browsers = repository_rule(implementation = _define_browsers_impl, attrs = {
-    "browsers_json": attr.label(allow_single_file = True),
-})
+define_browsers = repository_rule(
+    implementation = _define_browsers_impl, 
+    attrs = {
+        "browsers_json": attr.label(allow_single_file = True),
+    }
+)
 
 def _playwright_repo_impl(ctx):
     result = ctx.execute(

@@ -42,8 +42,7 @@ load("@rules_playwright//playwright:repositories.bzl", "define_browsers", "playw
 
 define_browsers(
     name = "browsers_index",
-    #browsers_json = "@browsers//file:downloaded",
-    browsers_json = "//:browsers.json",
+    browsers_json = "@browsers//file:downloaded",
 )
 
 load("@browsers_index//:browsers.bzl", "fetch_browsers")
@@ -53,5 +52,5 @@ fetch_browsers()
 playwright_repository(
     name = "playwright",
     playwright_version = "1.51.0",
-    user_workspace_name = "main",
+    user_workspace_name = "browsers_index",
 )
