@@ -1,0 +1,70 @@
+workspace(name = "workspace_example")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
+
+http_archive(
+    name = "aspect_rules_js",
+    sha256 = "d66f8abf914a0454a69181b7b17acaae56d7b0e2784cb26b40cb3273c4d836d1",
+    strip_prefix = "rules_js-2.2.0",
+    url = "https://github.com/aspect-build/rules_js/releases/download/v2.2.0/rules_js-v2.2.0.tar.gz",
+)
+
+load("@aspect_rules_js//js:repositories.bzl", "rules_js_dependencies")
+
+rules_js_dependencies()
+
+load("@aspect_rules_js//js:toolchains.bzl", "DEFAULT_NODE_VERSION", "rules_js_register_toolchains")
+
+rules_js_register_toolchains(node_version = DEFAULT_NODE_VERSION)
+
+load("@aspect_rules_js//npm:repositories.bzl", "npm_translate_lock")
+
+npm_translate_lock(
+    name = "npm",
+    pnpm_lock = "//:pnpm-lock.yaml",
+)
+
+load("@npm//:repositories.bzl", "npm_repositories")
+
+npm_repositories()
+
+local_repository(
+    name = "rules_playwright",
+    path = "../..",
+)
+
+http_file(
+    name = "browsers",
+    url = "https://unpkg.com/playwright-core@1.51.0/browsers.json",
+)
+
+load("@rules_playwright//playwright:repositories.bzl", "playwright_repository")
+
+playwright_repository(
+    name = "playwright",
+    playwright_version = "1.51.0",
+    # browsers_json = "//:browsers.json",
+    user_workspace_name = "browser",
+)
+
+http_archive(
+    name = "browser-webkit-mac14-arm64",
+    patch_cmds = [
+        "touch DEPENDENCIES_VALIDATED",
+        "touch INSTALLATION_COMPLETE",
+    ],
+    add_prefix = "browser",
+    build_file_content = """\
+filegroup(
+name = "file",
+srcs = ["browser"],
+visibility = ["//visibility:public"],
+)
+""",
+    integrity = "sha256-XRpAhomjjaMf3EoNKcbS7UwHQY0QNOrqHT0CycwTGnI=",
+    urls = [
+        "https://playwright.azureedge.net/builds/webkit/2140/webkit-mac-14-arm64.zip",
+        "https://playwright-akamai.azureedge.net/builds/webkit/2140/webkit-mac-14-arm64.zip",
+        "https://playwright-verizon.azureedge.net/builds/webkit/2140/webkit-mac-14-arm64.zip",
+    ],
+)
