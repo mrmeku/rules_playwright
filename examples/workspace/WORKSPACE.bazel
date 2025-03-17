@@ -36,6 +36,7 @@ local_repository(
 http_file(
     name = "browsers",
     url = "https://unpkg.com/playwright-core@1.51.0/browsers.json",
+    integrity = "sha256-PSKzz1BVE28nZ3YZFHorJyy37uTMGwSfktZw+G9zNKk="
 )
 
 load("@rules_playwright//playwright:repositories.bzl", "define_browsers", "playwright_repository")
@@ -55,8 +56,37 @@ playwright_repository(
     user_workspace_name = "browsers_index",
 )
 
+###########################################################
+# Example loading playwright version from package.json.   #
+###########################################################
+
 playwright_repository(
     name = "playwright_2",
     playwright_version_from = "//:package.json",
     user_workspace_name = "browsers_index",
+)
+
+###########################################################
+# Example with 1.50.1 browsers, to check their integrity. #
+###########################################################
+
+http_file(
+    name = "browsers_1_50_1",
+    url = "https://unpkg.com/playwright-core@1.50.1/browsers.json",
+    integrity = "sha256-e66TGaLdkSnHwrAZXhN8GlgXMLQf6M5X6C26Gtn0y4w="
+)
+
+define_browsers(
+    name = "browsers_index_1_50_1",
+    browsers_json = "@browsers_1_50_1//file:downloaded",
+)
+
+load("@browsers_index_1_50_1//:browsers.bzl", fetch_old_browsers = "fetch_browsers")
+
+fetch_old_browsers()
+
+playwright_repository(
+    name = "playwright_1_50_1",
+    playwright_version = "1.50.1",
+    user_workspace_name = "browsers_index_1_50_1",
 )

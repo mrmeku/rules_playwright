@@ -5,6 +5,7 @@ See https://docs.bazel.build/versions/main/skylark/deploying.html#dependencies
 """
 
 load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
+load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 
 _PLAYWRIGHT_PACKAGE = "playwright"
 _PLAYWRIGHT_TEST_PACKAGE = "@playwright/test"
@@ -93,7 +94,18 @@ def _define_browsers_impl(rctx):
         "def fetch_browsers():",
     ]
 
+    # Create a new dictionary by merging the known browser integrity with the user-provided integrity
+    # User-provided integrity takes precedence
+    integrity_map = dict(KNOWN_BROWSER_INTEGRITY)
+    for key, value in rctx.attr.browser_integrity.items():
+        integrity_map[key] = value
+
     for http_file_json in json.decode(result.stdout):
+        path = http_file_json["path"]
+        integrity_attr = ""
+        if path in integrity_map:
+            integrity_attr = 'integrity = "{}",\n'.format(integrity_map[path])
+
         result_build.append("""\
         http_archive(
             name = "{name}",
@@ -109,6 +121,7 @@ srcs = ["browser"],
 visibility = ["//visibility:public"],
 )
 \"\"\",
+            {integrity} 
             urls = [
                 "https://playwright.azureedge.net/{path}",
                 "https://playwright-akamai.azureedge.net/{path}",
@@ -117,7 +130,8 @@ visibility = ["//visibility:public"],
         )
 """.format(
     name = http_file_json["name"],
-    path = http_file_json["path"],
+    path = path,
+    integrity = integrity_attr,
 ))
     rctx.file("browsers.bzl", "\n".join(result_build))
     rctx.file("BUILD", "# no targets")
@@ -126,5 +140,9 @@ define_browsers = repository_rule(
     implementation = _define_browsers_impl,
     attrs = {
         "browsers_json": attr.label(allow_single_file = True),
-    }
+        "browser_integrity": attr.string_dict(
+            doc = "A dictionary of browser names to their integrity hashes",
+            default = {},
+        ),
+    },
 )
