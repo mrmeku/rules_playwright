@@ -13,7 +13,7 @@ effectively overriding the default named toolchain due to toolchain resolution p
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
 load(":repositories.bzl", "playwright_repository")
-
+load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 _DEFAULT_NAME = "playwright"
 
 playwright_repo = tag_class(attrs = {
@@ -25,7 +25,11 @@ Overriding the default is only permitted in the root module.
     "browsers_json": attr.label(doc = "Alternative to playwright_version. Skips downloading from unpkg", allow_single_file = True),
     "integrity_map": attr.string_dict(
         default = {},
-        doc = "Mapping from brower target to integrity hash",
+        doc = "Deprecated: Mapping from brower target to integrity hash",
+    ),
+    "integrity_path_map": attr.string_dict(
+        default = {},
+        doc = "Mapping from browser path to integrity hash",
     ),
 })
 
@@ -63,8 +67,16 @@ def _extension_impl(module_ctx):
                 fail("http-files command failed", result.stdout, result.stderr)
 
             for http_file_json in json.decode(result.stdout):
+                browser_name = http_file_json["name"]
+                path = http_file_json["path"]
+                integrity = repo.integrity_map.get(browser_name, None)
+                if not integrity:
+                    integrity = repo.integrity_path_map.get(path, None)
+                    if not integrity:
+                        integrity = KNOWN_BROWSER_INTEGRITY.get(path, None)
+
                 http_archive(
-                    name = http_file_json["name"],
+                    name = browser_name,
                     patch_cmds = [
                         "touch DEPENDENCIES_VALIDATED",
                         "touch INSTALLATION_COMPLETE",
@@ -77,11 +89,11 @@ filegroup(
     visibility = ["//visibility:public"],
 )
     """,
-                    integrity = repo.integrity_map.get(http_file_json["name"], None),
+                    integrity = integrity,
                     urls = [
-                        "https://playwright.azureedge.net/{}".format(http_file_json["path"]),
-                        "https://playwright-akamai.azureedge.net/{}".format(http_file_json["path"]),
-                        "https://playwright-verizon.azureedge.net/{}".format(http_file_json["path"]),
+                        "https://playwright.azureedge.net/{}".format(path),
+                        "https://playwright-akamai.azureedge.net/{}".format(path),
+                        "https://playwright-verizon.azureedge.net/{}".format(path),
                     ],
                 )
 
