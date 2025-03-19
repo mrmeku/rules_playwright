@@ -51,6 +51,12 @@ fetch_browsers()
 
 playwright_repository(
     name = "playwright",
-    playwright_version = "1.51.0",
+    playwright_version = "1.50.1",
+    user_workspace_name = "browsers_index",
+)
+
+playwright_repository(
+    name = "playwright_2",
+    playwright_version_from = "//:package.json",
     user_workspace_name = "browsers_index",
 )

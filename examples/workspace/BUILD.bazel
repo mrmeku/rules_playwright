@@ -6,5 +6,29 @@ npm_link_all_packages(name = "node_modules")
 playwright_bin.playwright_test(
     name = "test",
     args = ["test"],
-    data = ["@playwright//:webkit"],
+    data = [
+        "playwright.config.ts",
+        "simple.e2e.ts",
+        "//:node_modules/@playwright/test",
+        "@playwright//:chromium-headless-shell",
+    ],
+    tags = ["requires-network"],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
+    },
+)
+
+playwright_bin.playwright_test(
+    name = "test_2",
+    args = ["test"],
+    data = [
+        "playwright.config.ts",
+        "simple.e2e.ts",
+        "//:node_modules/@playwright/test",
+        "@playwright_2//:chromium-headless-shell",
+    ],
+    tags = ["requires-network"],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright_2//:chromium-headless-shell)/../",
+    },
 )
