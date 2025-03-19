@@ -33,7 +33,7 @@ def get_cli_path(ctx):
         Path to the browser workspace generator binary for the current platform
     """
     arch = "arm64"
-    if ctx.os.arch == "amd64":
+    if ctx.os.arch == "amd64" or ctx.os.arch == "x86_64":
         arch = "x86_64"
 
     platform = "unknown-linux-musl"
