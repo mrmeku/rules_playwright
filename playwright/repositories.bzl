@@ -28,8 +28,8 @@ def _playwright_repo_impl(ctx):
     if ctx.attr.playwright_version and ctx.attr.playwright_version_from:
         fail("playwright_version and playwright_version_from cannot both be set")
 
-    if not ctx.attr.playwright_version and not ctx.attr.playwright_version_from:
-        fail("one of playwright_version or playwright_version_from must be set")
+    if not ctx.attr.playwright_version and not ctx.attr.playwright_version_from and not ctx.attr.browsers_json:
+        fail("one of playwright_version or playwright_version_from or browsers_json must be set")
 
     playwright_version = ctx.attr.playwright_version
 
