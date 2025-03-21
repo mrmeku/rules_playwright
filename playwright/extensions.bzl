@@ -11,7 +11,7 @@ effectively overriding the default named toolchain due to toolchain resolution p
 """
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
+load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path", "load_playwright_from_attrs")
 load(":repositories.bzl", "playwright_repository")
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 _DEFAULT_NAME = "playwright"
@@ -21,7 +21,14 @@ playwright_repo = tag_class(attrs = {
 Base name for generated repositories, allowing more than one playwright toolchain to be registered.
 Overriding the default is only permitted in the root module.
 """, default = _DEFAULT_NAME),
-    "playwright_version": attr.string(doc = "Explicit version of playwright to download browsers.json from"),
+    "playwright_version": attr.string(
+        doc = "Explicit version of playwright to download browsers.json from",
+    ),
+    "playwright_version_from": attr.label(
+        mandatory = False,
+        allow_single_file = [".json"],
+        doc = "The package.json file to use to find the version of playwright to install",
+    ),
     "browsers_json": attr.label(doc = "Alternative to playwright_version. Skips downloading from unpkg", allow_single_file = True),
     "integrity_map": attr.string_dict(
         default = {},
@@ -44,10 +51,11 @@ def _extension_impl(module_ctx):
                 This prevents conflicting registrations in the global namespace of external repos.
                 """)
 
-            if not repo.playwright_version and not repo.browsers_json:
-                fail("""\
-                One of playwright_version or browsers_json must be specified.
-                """)
+            playwright_version = load_playwright_from_attrs(
+                module_ctx,
+                repo.playwright_version,
+                repo.playwright_version_from,
+            )
 
             cli = get_cli_path(module_ctx)
             module_ctx.watch(cli)
@@ -58,7 +66,7 @@ def _extension_impl(module_ctx):
                     cli,
                     "http-files",
                     "--browser-json-path",
-                    get_browsers_json_path(module_ctx, repo.playwright_version, repo.browsers_json),
+                    get_browsers_json_path(module_ctx, playwright_version, repo.browsers_json),
                     "--workspace-name",
                     name,
                 ],
@@ -100,7 +108,7 @@ filegroup(
             # Step 2: generate repository which references said http_files
             playwright_repository(
                 name = name,
-                playwright_version = repo.playwright_version,
+                playwright_version = playwright_version,
                 browsers_json = repo.browsers_json,
                 user_workspace_name = name,
             )

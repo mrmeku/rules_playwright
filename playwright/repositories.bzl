@@ -4,42 +4,15 @@ These are needed for local dev, and users must install them as well.
 See https://docs.bazel.build/versions/main/skylark/deploying.html#dependencies
 """
 
-load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
+load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path", "load_playwright_from_attrs")
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 
-_PLAYWRIGHT_PACKAGE = "playwright"
-_PLAYWRIGHT_TEST_PACKAGE = "@playwright/test"
-_PLAYWRIGHT_PACKAGES = [_PLAYWRIGHT_PACKAGE, _PLAYWRIGHT_TEST_PACKAGE]
-
-def _find_playwright_version_in_deps(deps_dict):
-    for package in _PLAYWRIGHT_PACKAGES:
-        if package in deps_dict:
-            return deps_dict[package]
-    return None
-
-def _extract_playwright_version(package_json_data):
-    version = _find_playwright_version_in_deps(package_json_data.get("dependencies", {}))
-    if not version:
-        version = _find_playwright_version_in_deps(package_json_data.get("devDependencies", {}))
-
-    return version
-
 def _playwright_repo_impl(ctx):
-    if ctx.attr.playwright_version and ctx.attr.playwright_version_from:
-        fail("playwright_version and playwright_version_from cannot both be set")
-
-    if not ctx.attr.playwright_version and not ctx.attr.playwright_version_from:
-        fail("one of playwright_version or playwright_version_from must be set")
-
-    playwright_version = ctx.attr.playwright_version
-
-    if ctx.attr.playwright_version_from:
-        package_json_content = ctx.read(ctx.attr.playwright_version_from)
-        package_json_data = json.decode(package_json_content)
-        playwright_version = _extract_playwright_version(package_json_data)
-        if not playwright_version:
-            fail("playwright not found in dependencies or devDependencies")
-
+    playwright_version = load_playwright_from_attrs(
+        ctx,
+        ctx.attr.playwright_version,
+        ctx.attr.playwright_version_from,
+    )
     result = ctx.execute(
         [
             get_cli_path(ctx),

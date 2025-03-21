@@ -12,7 +12,7 @@ playwright.repo(
         "chromium-headless-shell-mac14-arm64": "sha256-pJnv5Nfost7BtlSlG1JPzpQHgzXlxerZHyDoV3/1NM0=",
         "webkit-mac14-arm64": "sha256-RiHUDBPVDRlnkgHXzaoeQeAxeSvMiWNOphl/GlEj5aA=",
     },
-    playwright_version = "1.50.1",
+    playwright_version_from = "//:package.json",
 )
 use_repo(playwright, "playwright")
 
