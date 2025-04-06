@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use serde::Serialize;
 
 use crate::{
@@ -33,9 +35,14 @@ impl From<BrowserTarget> for HttpFile {
 
 pub fn get_browser_rules(
     workspace_name: &str,
-    browsers: Browsers,
-    download_paths: DownloadPaths,
-) -> Vec<BrowserTarget> {
+    browser_json_path: &PathBuf,
+) -> std::io::Result<Vec<BrowserTarget>> {
+    let browsers_json = std::fs::read_to_string(browser_json_path)?;
+    let browsers: Browsers = serde_json::from_str(&browsers_json)?;
+
+    let download_paths_json = include_str!("download_paths.json");
+    let download_paths: DownloadPaths = serde_json::from_str(download_paths_json)?;
+
     let has_headles = browsers
         .browsers
         .iter()
@@ -114,5 +121,5 @@ pub fn get_browser_rules(
 
     browser_rules.sort_by(|a, b| a.label.cmp(&b.label));
 
-    browser_rules
+    Ok(browser_rules)
 }

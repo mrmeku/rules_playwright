@@ -1,1 +1,2 @@
-common --noenable_bzlmod
+common --noenable_bzlmod --enable_workspace
+common --symlink_prefix=/
