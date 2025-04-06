@@ -7,7 +7,7 @@ use crate::browser_targets::BrowserTarget;
 #[derive(Template)]
 #[template(
     source = r#"
-load("@{{ rules_playwright_cannonical_name }}//playwright:unzip_browser.bzl", "unzip_browser")
+load("@{{ rules_playwright_cannonical_name }}//playwright:defs.bzl", "unzip_browser")
 
 package(default_visibility = ["//visibility:public"])
 

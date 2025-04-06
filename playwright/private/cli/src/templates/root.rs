@@ -6,7 +6,7 @@ use super::RootTarget;
 #[derive(Template)]
 #[template(
     source = r#"
-load("@{{ rules_playwright_cannonical_name }}//playwright:select_exec.bzl", "select_exec")
+load("@{{ rules_playwright_cannonical_name }}//playwright:defs.bzl", "select_exec")
 
 package(default_visibility = ["//visibility:public"])
 {% for target in select_targets %}

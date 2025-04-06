@@ -1,7 +1,8 @@
 "Public API re-exports"
 
-load("//playwright/private:integrity_map.bzl", _playwright_integrity_map = "playwright_integrity_map")
-load("//playwright/private:util.bzl", _playwright_browser_matrix = "playwright_browser_matrix")
+load("//playwright/private:integrity_map.bzl", _playwright_browser_matrix = "playwright_browser_matrix", _playwright_integrity_map = "playwright_integrity_map")
+load("//playwright/private:select_exec.bzl", _select_exec = "select_exec")
+load("//playwright/private:unzip_browser.bzl", _unzip_browser = "unzip_browser")
 
 LINUX_DISTROS = [
     "debian11",
@@ -24,3 +25,5 @@ MACOS_VERSIONS = [
 
 playwright_integrity_map = _playwright_integrity_map
 playwright_browser_matrix = _playwright_browser_matrix
+unzip_browser = _unzip_browser
+select_exec = _select_exec
