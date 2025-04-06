@@ -1,5 +1,5 @@
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
-load("//playwright:defs.bzl", "LINUX_DISTROS", "MACOS_VERSIONS", "playwright_browser_matrix", "playwright_integrity_map")
+load("//playwright:defs.bzl", "LINUX_DISTROS", "MACOS_VERSIONS")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -13,35 +13,4 @@ string_flag(
     name = "linux_distro",
     build_setting_default = "ubuntu24.04",
     values = LINUX_DISTROS,
-)
-
-playwright_integrity_map(
-    name = "playwright_integrity_map_1.49.1",
-    browsers = playwright_browser_matrix(
-        browser_names = [
-            "chromium-headless-shell",
-            "chromium",
-        ],
-        platforms = [
-            "mac14-arm64",
-            "ubuntu20.04-x64",
-        ],
-        playright_repo_name = "playwright-1.49.1",
-    ),
-)
-
-playwright_integrity_map(
-    name = "playwright_integrity_map_1.50.1",
-    browsers = playwright_browser_matrix(
-        browser_names = [
-            "chromium-headless-shell",
-            "chromium",
-        ],
-        platforms = [
-            "mac14-arm64",
-            "ubuntu20.04-x64",
-        ],
-        playright_repo_name = "playwright-1.50.1",
-    ),
-    silent = True,
 )

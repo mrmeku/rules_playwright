@@ -1,7 +1,7 @@
 """Small rule which unzip a browser to a tree artifact using bash.
 """
 
-load("//playwright:unzip_browser.bzl", "UnzippedBrowserInfo")
+load(":unzip_browser.bzl", "UnzippedBrowserInfo")
 
 def _playwright_integrity_map_impl(ctx):
     output = ctx.actions.declare_file(ctx.attr.output if ctx.attr.output else ctx.attr.name + ".json")
@@ -66,3 +66,26 @@ playwright_integrity_map = rule(
         ),
     },
 )
+
+def playwright_browser_matrix(playright_repo_name, platforms, browser_names):
+    """
+    Generates a list of Bazel target labels for browser dependencies.
+
+    This function creates a cross-product of browser names and platforms, constructing
+    the appropriate Bazel target labels for each combination.
+
+    "@{playright_repo_name}//browsers:{browser_name}-{platform}"
+
+    Args:
+        playright_repo_name: The name of the Playwright repository.
+        platforms: A list of platform identifiers (e.g., ['mac14-arm', 'ubuntu20.04-x64]).
+        browser_names: A list of browser names (e.g., ['chromium', 'firefox']).
+
+    Returns:
+        A list of browser labels to be used as the browsers attribute of the integrity_map rule.
+    """
+    browser_labels = []
+    for browser in browser_names:
+        for platform in platforms:
+            browser_labels.append("@{}//browsers:{}-{}".format(playright_repo_name, browser, platform))
+    return browser_labels

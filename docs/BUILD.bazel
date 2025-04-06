@@ -1,0 +1,29 @@
+load("@aspect_bazel_lib//lib:docs.bzl", "stardoc_with_diff_test", "update_docs")
+
+stardoc_with_diff_test(
+    name = "integrity_map",
+    bzl_library_target = "//playwright/private:integrity_map",
+)
+
+stardoc_with_diff_test(
+    name = "defs",
+    bzl_library_target = "//playwright:defs",
+    symbol_names = [
+        "playwright_integrity_map",
+        "playwright_browser_matrix",
+    ],
+)
+
+stardoc_with_diff_test(
+    name = "extensions",
+    bzl_library_target = "//playwright:extensions",
+)
+
+stardoc_with_diff_test(
+    name = "repositories",
+    bzl_library_target = "//playwright:repositories",
+)
+
+update_docs(
+    name = "update",
+)

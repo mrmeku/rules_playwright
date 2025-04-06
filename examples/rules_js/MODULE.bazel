@@ -8,10 +8,14 @@ playwright = use_extension("@mrmeku_rules_playwright//playwright:extensions.bzl"
 playwright.repo(
     name = "playwright",
     browsers_json = "//:browsers.1.50.1.json",
+    # Derived from running //:playwright_integrity_map
     integrity_map = {
-        "firefox-mac14-arm64": "sha256-+FLEjmC1ypnAI/DQY4uJhtx3kQPN4mX8LC0TWEt9x9Y=",
-        "chromium-headless-shell-mac14-arm64": "sha256-pJnv5Nfost7BtlSlG1JPzpQHgzXlxerZHyDoV3/1NM0=",
-        "webkit-mac14-arm64": "sha256-RiHUDBPVDRlnkgHXzaoeQeAxeSvMiWNOphl/GlEj5aA=",
+        "builds/chromium/1155/chromium-headless-shell-mac-arm64.zip": "sha256-a499efe4d7e8b2dec1b654a51b524fce94078335e5c5ead91f20e8577ff534cd",
+        "builds/chromium/1155/chromium-headless-shell-linux.zip": "sha256-3536f44d07d251389a57be819cdb2ea724c5c9b6b1eb0eddd8a37c547cc05234",
+        "builds/firefox/1471/firefox-mac-arm64.zip": "sha256-f852c48e60b5ca99c023f0d0638b8986dc779103cde265fc2c2d13584b7dc7d6",
+        "builds/webkit/2123/webkit-mac-14-arm64.zip": "sha256-4621d40c13d50d19679201d7cdaa1e41e031792bcc89634ea6197f1a5123e5a0",
+        "builds/webkit/2092/webkit-ubuntu-20.04.zip": "sha256-e1d1db96e964c578958958fc22b87acf3ab53ec54245f8e07925a90c7999fb44",
+        "builds/firefox/1471/firefox-ubuntu-20.04.zip": "sha256-10113c986a9e0452f02e39ebacfca4777ba8740eecd909bcdc81c6f6740ce79a",
     },
 )
 use_repo(playwright, "playwright")
