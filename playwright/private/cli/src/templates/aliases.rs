@@ -40,6 +40,7 @@ struct AliasTargetSelect {
 pub fn write_build_file(
     out_dir: &Path,
     root_targets: &HashMap<String, RootTarget>,
+    rules_playwright_cannonical_name: &str,
 ) -> io::Result<()> {
     let template = AliasBuildFileTemplate {
         alias_targets: root_targets
@@ -55,7 +56,7 @@ pub fn write_build_file(
                             .iter()
                             .map(|(platform, platform_target)| AliasTargetSelect {
                                 key: format!(
-                                    "@rules_playwright//tools/platforms:{}",
+                                    "@{rules_playwright_cannonical_name}//tools/platforms:{}",
                                     platform.base_name()
                                 ),
                                 value: format!("//browsers:{}", platform_target.name),

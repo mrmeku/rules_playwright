@@ -7,7 +7,7 @@ use crate::browser_targets::BrowserTarget;
 #[derive(Template)]
 #[template(
     source = r#"
-load("@rules_playwright//playwright:unzip_browser.bzl", "unzip_browser")
+load("@{{ rules_playwright_cannonical_name }}//playwright:unzip_browser.bzl", "unzip_browser")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -24,15 +24,23 @@ unzip_browser(
 )]
 struct BrowsersBuildFileTemplate<'a> {
     browser_targets: &'a Vec<BrowserTarget>,
+    rules_playwright_cannonical_name: &'a str,
 }
 
-pub fn write_build_file(out_dir: &Path, browser_targets: &Vec<BrowserTarget>) -> io::Result<()> {
+pub fn write_build_file(
+    out_dir: &Path,
+    browser_targets: &Vec<BrowserTarget>,
+    rules_playwright_cannonical_name: &str,
+) -> io::Result<()> {
     let browsers_dir = out_dir.join("browsers");
     fs::create_dir(browsers_dir)?;
     fs::write(
         out_dir.join("browsers/BUILD.bazel"),
-        BrowsersBuildFileTemplate { browser_targets }
-            .render()
-            .unwrap(),
+        BrowsersBuildFileTemplate {
+            browser_targets,
+            rules_playwright_cannonical_name,
+        }
+        .render()
+        .unwrap(),
     )
 }

@@ -1,1 +1,0 @@
-rm -rf out/ && mkdir out && cd out && cargo run -- --browser-json-path /Users/mrmeku/rules_playwright/playwright/private/cli/src/test/browsers.json --workspace-name playwright workspace

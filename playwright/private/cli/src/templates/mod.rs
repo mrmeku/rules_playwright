@@ -8,8 +8,12 @@ mod aliases;
 mod browsers;
 mod root;
 
-pub fn write_workspace(out_dir: &Path, browser_targets: Vec<BrowserTarget>) -> io::Result<()> {
-    browsers::write_build_file(out_dir, &browser_targets)?;
+pub fn write_workspace(
+    out_dir: &Path,
+    browser_targets: Vec<BrowserTarget>,
+    rules_playwright_cannonical_name: &str,
+) -> io::Result<()> {
+    browsers::write_build_file(out_dir, &browser_targets, rules_playwright_cannonical_name)?;
 
     let mut root_targets: HashMap<String, RootTarget> = HashMap::new();
     for target in browser_targets {
@@ -39,8 +43,8 @@ pub fn write_workspace(out_dir: &Path, browser_targets: Vec<BrowserTarget>) -> i
         );
     }
 
-    root::write_build_file(out_dir, &root_targets)?;
-    aliases::write_build_file(out_dir, &root_targets)
+    root::write_build_file(out_dir, &root_targets, rules_playwright_cannonical_name)?;
+    aliases::write_build_file(out_dir, &root_targets, rules_playwright_cannonical_name)
 }
 
 struct RootTarget {
