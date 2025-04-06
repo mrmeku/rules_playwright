@@ -12,3 +12,5 @@ serde = { version = "1.0.217", features = [
     "serde_derive",
 ], default-features = false }
 xflags = { version = "0.3.2", features = [], default-features = false }
+zip = "2.6.0"
+sha2 = "0.10.8"

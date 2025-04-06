@@ -1,4 +1,8 @@
 "Public API re-exports"
+
+load("//playwright/private:integrity_map.bzl", _playwright_integrity_map = "playwright_integrity_map")
+load("//playwright/private:util.bzl", _playwright_browser_matrix = "playwright_browser_matrix")
+
 LINUX_DISTROS = [
     "debian11",
     "debian12",
@@ -17,3 +21,6 @@ MACOS_VERSIONS = [
     "14",
     "15",
 ]
+
+playwright_integrity_map = _playwright_integrity_map
+playwright_browser_matrix = _playwright_browser_matrix

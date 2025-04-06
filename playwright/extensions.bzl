@@ -10,10 +10,11 @@ names (the latest version will be picked for each name) and can register them as
 effectively overriding the default named toolchain due to toolchain resolution precedence.
 """
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
 load(":repositories.bzl", "playwright_repository")
-load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
+
 _DEFAULT_NAME = "playwright"
 
 playwright_repo = tag_class(attrs = {
@@ -75,20 +76,8 @@ def _extension_impl(module_ctx):
                     if not integrity:
                         integrity = KNOWN_BROWSER_INTEGRITY.get(path, None)
 
-                http_archive(
+                http_file(
                     name = browser_name,
-                    patch_cmds = [
-                        "touch DEPENDENCIES_VALIDATED",
-                        "touch INSTALLATION_COMPLETE",
-                    ],
-                    add_prefix = "browser",
-                    build_file_content = """\
-filegroup(
-    name = "file",
-    srcs = ["browser"],
-    visibility = ["//visibility:public"],
-)
-    """,
                     integrity = integrity,
                     urls = [
                         "https://playwright.azureedge.net/{}".format(path),

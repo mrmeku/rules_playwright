@@ -14,8 +14,9 @@ package(default_visibility = ["//visibility:public"])
 {% for target in browser_targets %}
 unzip_browser(
     name = "{{ target.label }}",
-    browser = "@{{ target.http_file_workspace_name }}//:file",
+    browser = "@{{ target.http_file_workspace_name }}//file",
     output_dir = "{{ target.output_dir }}",
+    http_file_path = "{{ target.http_file_path }}",
 )
 {% endfor %}
 "#,

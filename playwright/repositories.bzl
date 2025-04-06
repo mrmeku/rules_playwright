@@ -4,8 +4,8 @@ These are needed for local dev, and users must install them as well.
 See https://docs.bazel.build/versions/main/skylark/deploying.html#dependencies
 """
 
-load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
+load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
 
 _PLAYWRIGHT_PACKAGE = "playwright"
 _PLAYWRIGHT_TEST_PACKAGE = "@playwright/test"
@@ -39,6 +39,8 @@ def _playwright_repo_impl(ctx):
         playwright_version = _extract_playwright_version(package_json_data)
         if not playwright_version:
             fail("playwright not found in dependencies or devDependencies")
+
+    ctx.watch(get_cli_path(ctx))
 
     result = ctx.execute(
         [
@@ -90,7 +92,7 @@ def _define_browsers_impl(rctx):
         fail("http-files command failed", result.stdout, result.stderr)
 
     result_build = [
-        """load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")""",
+        """load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")""",
         "def fetch_browsers():",
     ]
 
@@ -107,20 +109,8 @@ def _define_browsers_impl(rctx):
             integrity_attr = 'integrity = "{}",\n'.format(integrity_map[path])
 
         result_build.append("""\
-        http_archive(
+        http_file(
             name = "{name}",
-            patch_cmds = [
-                "touch DEPENDENCIES_VALIDATED",
-                "touch INSTALLATION_COMPLETE",
-            ],
-            add_prefix = "browser",
-            build_file_content = \"\"\"
-filegroup(
-name = "file",
-srcs = ["browser"],
-visibility = ["//visibility:public"],
-)
-\"\"\",
             {integrity} 
             urls = [
                 "https://playwright.azureedge.net/{path}",
@@ -129,10 +119,10 @@ visibility = ["//visibility:public"],
             ],
         )
 """.format(
-    name = http_file_json["name"],
-    path = path,
-    integrity = integrity_attr,
-))
+            name = http_file_json["name"],
+            path = path,
+            integrity = integrity_attr,
+        ))
     rctx.file("browsers.bzl", "\n".join(result_build))
     rctx.file("BUILD", "# no targets")
 
