@@ -17,11 +17,12 @@ mod flags {
         cmd rules-playwright {
             cmd workspace  {
                 required --browser-json-path browser_json_path: PathBuf
-                required --workspace-name workspace_name: String
+                required --browsers-workspace-name-prefix browsers_workspace_name_prefix: String
+                required --rules-playwright-cannonical-name rules_playwright_cannonical_name: String
             }
             cmd http-files {
                 required --browser-json-path browser_json_path: PathBuf
-                required --workspace-name workspace_name: String
+                required --browsers-workspace-name-prefix browsers_workspace_name_prefix: String
             }
             cmd unzip {
                 required --input-path input_path: PathBuf
@@ -46,12 +47,13 @@ pub fn main() -> std::io::Result<()> {
         flags::RulesPlaywrightCmd::Workspace(cmd) => {
             templates::write_workspace(
                 &out_dir,
-                get_browser_rules(&cmd.workspace_name, &cmd.browser_json_path)?,
+                get_browser_rules(&cmd.browsers_workspace_name_prefix, &cmd.browser_json_path)?,
+                &cmd.rules_playwright_cannonical_name,
             )?;
         }
         flags::RulesPlaywrightCmd::HttpFiles(cmd) => {
             let http_files: Vec<HttpFile> =
-                get_browser_rules(&cmd.workspace_name, &cmd.browser_json_path)?
+                get_browser_rules(&cmd.browsers_workspace_name_prefix, &cmd.browser_json_path)?
                     .into_iter()
                     .map(|b| b.into())
                     .collect();

@@ -60,8 +60,8 @@ def _extension_impl(module_ctx):
                     "http-files",
                     "--browser-json-path",
                     get_browsers_json_path(module_ctx, repo.playwright_version, repo.browsers_json),
-                    "--workspace-name",
-                    name,
+                    "--browsers-workspace-name-prefix",
+                    repo.name,
                 ],
             )
             if result.return_code != 0:
@@ -91,7 +91,10 @@ def _extension_impl(module_ctx):
                 name = name,
                 playwright_version = repo.playwright_version,
                 browsers_json = repo.browsers_json,
-                user_workspace_name = name,
+                browsers_workspace_name_prefix = name,
+                # Map the apparant name of the module to the cannonical name
+                # See https://bazel.build/external/module
+                rules_playwright_cannonical_name = "@" + Label("rules_playwright").repo_name,
             )
 
 playwright = module_extension(

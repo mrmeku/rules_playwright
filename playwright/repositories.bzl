@@ -48,13 +48,15 @@ def _playwright_repo_impl(ctx):
             "workspace",
             "--browser-json-path",
             get_browsers_json_path(ctx, playwright_version, ctx.attr.browsers_json),
-            "--workspace-name",
-            ctx.attr.user_workspace_name,
+            "--browsers-workspace-name-prefix",
+            ctx.attr.browsers_workspace_name_prefix,
+            "--rules-playwright-cannonical-name",
+            ctx.attr.rules_playwright_cannonical_name,
         ],
     )
 
     if result.return_code != 0:
-        fail(ctx.attr.user_workspace_name, "workspace command failed", result.stdout, result.stderr)
+        fail(ctx.attr.name, "workspace command failed", result.stdout, result.stderr)
 
 playwright_repository = repository_rule(
     _playwright_repo_impl,
@@ -73,7 +75,14 @@ playwright_repository = repository_rule(
             allow_single_file = True,
             doc = "The browsers.json file to use. For example https://unpkg.com/playwright-core@1.51.0/browsers.json",
         ),
-        "user_workspace_name": attr.string(mandatory = True),
+        "browsers_workspace_name_prefix": attr.string(
+            mandatory = True,
+            doc = "The namespace prefix used when defining browser workspace repositories.",
+        ),
+        "rules_playwright_cannonical_name": attr.string(
+            mandatory = True,
+            doc = "The cannonical name given to the rules_playwright repository. See https://bazel.build/external/module",
+        ),
     },
 )
 
@@ -84,8 +93,8 @@ def _define_browsers_impl(rctx):
             "http-files",
             "--browser-json-path",
             rctx.path(rctx.attr.browsers_json),
-            "--workspace-name",
-            rctx.name,
+            "--browsers-workspace-name-prefix",
+            rctx.attr.name,
         ],
     )
     if result.return_code != 0:

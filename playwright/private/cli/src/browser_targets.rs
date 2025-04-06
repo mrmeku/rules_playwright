@@ -34,7 +34,7 @@ impl From<BrowserTarget> for HttpFile {
 }
 
 pub fn get_browser_rules(
-    workspace_name: &str,
+    browsers_workspace_name_prefix: &str,
     browser_json_path: &PathBuf,
 ) -> std::io::Result<Vec<BrowserTarget>> {
     let browsers_json = std::fs::read_to_string(browser_json_path)?;
@@ -97,7 +97,7 @@ pub fn get_browser_rules(
 
                             Some(BrowserTarget {
                                 http_file_workspace_name: format!(
-                                    "{workspace_name}-{browser_name}-{platform_str}"
+                                    "{browsers_workspace_name_prefix}-{browser_name}-{platform_str}"
                                 ),
                                 http_file_path: template.replace("%s", revision),
                                 label: format!("{browser_name}-{platform_str}"),

@@ -1,6 +1,6 @@
 workspace(name = "workspace_example")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "aspect_rules_js",
@@ -29,7 +29,7 @@ load("@npm//:repositories.bzl", "npm_repositories")
 npm_repositories()
 
 local_repository(
-    name = "rules_playwright",
+    name = "mrmeku_rules_playwright",
     path = "../..",
 )
 
@@ -45,7 +45,7 @@ exports_files([
     url = "https://registry.npmjs.org/playwright-core/-/playwright-core-1.51.0.tgz",
 )
 
-load("@rules_playwright//playwright:repositories.bzl", "define_browsers", "playwright_repository")
+load("@mrmeku_rules_playwright//playwright:repositories.bzl", "define_browsers", "playwright_repository")
 
 define_browsers(
     name = "browsers_index",
@@ -58,8 +58,9 @@ fetch_browsers()
 
 playwright_repository(
     name = "playwright",
+    browsers_workspace_name_prefix = "browsers_index",
     playwright_version = "1.51.0",
-    user_workspace_name = "browsers_index",
+    rules_playwright_cannonical_name = "mrmeku_rules_playwright",
 )
 
 # ###########################################################
@@ -68,6 +69,7 @@ playwright_repository(
 
 playwright_repository(
     name = "playwright_2",
+    browsers_workspace_name_prefix = "browsers_index",
     playwright_version_from = "//:package.json",
-    user_workspace_name = "browsers_index",
+    rules_playwright_cannonical_name = "mrmeku_rules_playwright",
 )
