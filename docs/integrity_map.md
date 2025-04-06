@@ -1,13 +1,13 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
-Small rule which unzip a browser to a tree artifact using bash.
+Public API re-exports
 
 <a id="playwright_integrity_map"></a>
 
 ## playwright_integrity_map
 
 <pre>
-load("@rules_playwright//playwright/private:integrity_map.bzl", "playwright_integrity_map")
+load("@rules_playwright//playwright:defs.bzl", "playwright_integrity_map")
 
 playwright_integrity_map(<a href="#playwright_integrity_map-name">name</a>, <a href="#playwright_integrity_map-browsers">browsers</a>, <a href="#playwright_integrity_map-output">output</a>, <a href="#playwright_integrity_map-silent">silent</a>)
 </pre>
@@ -30,7 +30,7 @@ playwright_integrity_map(<a href="#playwright_integrity_map-name">name</a>, <a h
 ## playwright_browser_matrix
 
 <pre>
-load("@rules_playwright//playwright/private:integrity_map.bzl", "playwright_browser_matrix")
+load("@rules_playwright//playwright:defs.bzl", "playwright_browser_matrix")
 
 playwright_browser_matrix(<a href="#playwright_browser_matrix-playright_repo_name">playright_repo_name</a>, <a href="#playwright_browser_matrix-platforms">platforms</a>, <a href="#playwright_browser_matrix-browser_names">browser_names</a>)
 </pre>
