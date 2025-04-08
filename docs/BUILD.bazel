@@ -7,18 +7,19 @@ stardoc_with_diff_test(
         "playwright_integrity_map",
         "playwright_browser_matrix",
     ],
+    renderer = "//tools:stardoc_renderer",
 )
 
 stardoc_with_diff_test(
     name = "extensions",
     bzl_library_target = "//playwright:extensions",
+    renderer = "//tools:stardoc_renderer",
 )
 
 stardoc_with_diff_test(
     name = "repositories",
     bzl_library_target = "//playwright:repositories",
+    renderer = "//tools:stardoc_renderer",
 )
 
-update_docs(
-    name = "update",
-)
+update_docs(name = "update")
