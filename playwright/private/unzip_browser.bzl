@@ -16,7 +16,7 @@ def _unzip_browser_impl(ctx):
         inputs = [ctx.file.browser],
         outputs = [output_dir],
         executable = ctx.executable._cli,
-        arguments = ["--output-path", output_dir.path, "--input-path", ctx.file.browser.path]
+        arguments = ["--output-path", output_dir.path, "--input-path", ctx.file.browser.path],
     )
     return [
         DefaultInfo(files = depset([output_dir])),
@@ -37,7 +37,7 @@ unzip_browser = rule(
         ),
         "output_dir": attr.string(mandatory = True),
         "_cli": attr.label(
-            default = "//tools/release:unzip_browser.sh"",
+            default = "//tools/release:unzip_browser.sh",
             allow_single_file = True,
             executable = True,
             cfg = "exec",

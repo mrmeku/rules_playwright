@@ -29,6 +29,3 @@ mkdir -p "$OUTPUT_DIR"
 
 # Extract the zip file
 unzip -q "$ZIP_FILE" -d "$OUTPUT_DIR"
-
-# Ensure all files are executable
-find "$OUTPUT_DIR" -type f -exec chmod +x {} \;
