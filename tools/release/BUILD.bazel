@@ -67,3 +67,5 @@ native_binary(
     ),
     out = "cli",
 )
+
+exports_files(["unzip_browser.sh"])
