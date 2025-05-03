@@ -17,11 +17,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      # Install only Playwright system dependencies
+      - name: Install Playwright system dependencies
+        run: npx playwright install-deps
+
       - name: Build and Test WORKSPACE example
-        run: cd examples/workspace && bazelisk test //...
+        working-directory: examples/workspace
+        run: bazelisk test //...
+
       - name: Build and Test MODULE.bazel example
-        # The test isn't working, but we can verify the build works.
-        run: cd examples/rules_js && bazelisk build //...
+        working-directory: examples/rules_js
+        run: bazelisk test //... --test_output=all
+
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

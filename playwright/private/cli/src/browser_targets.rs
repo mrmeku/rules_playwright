@@ -88,12 +88,27 @@ pub fn get_browser_rules(
                             .map(|name| name.trim_matches('"').to_string()),
                     ) {
                         (Some(template), Ok(platform_str), Ok(browser_name)) => {
+                            let has_revision_override = browser
+                                .revision_overrides
+                                .as_ref()
+                                .and_then(|overrides| overrides.get(platform))
+                                .is_some();
+
                             let revision = browser
                                 .revision_overrides
                                 .as_ref()
                                 .and_then(|overrides| overrides.get(platform))
                                 .unwrap_or(&browser.revision);
+
                             let snake_case_browser_name = browser_name.replace("-", "_");
+                            let browser_directory_prefix = if has_revision_override {
+                                format!(
+                                    "{}_{}_{}",
+                                    snake_case_browser_name, platform_str, "special"
+                                )
+                            } else {
+                                snake_case_browser_name
+                            };
 
                             Some(BrowserTarget {
                                 http_file_workspace_name: format!(
@@ -102,8 +117,8 @@ pub fn get_browser_rules(
                                 http_file_path: template.replace("%s", revision),
                                 label: format!("{browser_name}-{platform_str}"),
                                 output_dir: format!(
-                                    "{platform_str}/{snake_case_browser_name}-{}",
-                                    browser.revision
+                                    "{platform_str}/{}-{}",
+                                    browser_directory_prefix, browser.revision
                                 ),
                                 browser_name,
                                 platform: platform.clone(),
