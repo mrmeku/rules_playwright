@@ -23,6 +23,14 @@ Base name for generated repositories, allowing more than one playwright toolchai
 Overriding the default is only permitted in the root module.
 """, default = _DEFAULT_NAME),
     "playwright_version": attr.string(doc = "Explicit version of playwright to download browsers.json from"),
+    "browsers_download_urls": attr.string_list(
+      default = [
+        "https://playwright.azureedge.net",
+        "https://playwright-akamai.azureedge.net",
+        "https://playwright-verizon.azureedge.net",
+      ],
+      doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+    ),
     "browsers_json": attr.label(doc = "Alternative to playwright_version. Skips downloading from unpkg", allow_single_file = True),
     "integrity_map": attr.string_dict(
         default = {},
@@ -76,14 +84,12 @@ def _extension_impl(module_ctx):
                     if not integrity:
                         integrity = KNOWN_BROWSER_INTEGRITY.get(path, None)
 
+                urls = [url + "/" + path for url in repo.browsers_download_urls]
+
                 http_file(
                     name = browser_name,
                     integrity = integrity,
-                    urls = [
-                        "https://playwright.azureedge.net/{}".format(path),
-                        "https://playwright-akamai.azureedge.net/{}".format(path),
-                        "https://playwright-verizon.azureedge.net/{}".format(path),
-                    ],
+                    urls = urls,
                 )
 
             # Step 2: generate repository which references said http_files

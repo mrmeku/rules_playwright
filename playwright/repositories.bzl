@@ -117,21 +117,24 @@ def _define_browsers_impl(rctx):
         if path in integrity_map:
             integrity_attr = 'integrity = "{}",\n'.format(integrity_map[path])
 
+        urls_attr = "urls = [\n"
+        for url in rctx.attr.browsers_download_urls:
+            urls_attr = urls_attr + "\"{}/{}\",\n".format(url, path)
+        urls_attr = urls_attr + "],"
+
         result_build.append("""\
         http_file(
             name = "{name}",
             {integrity} 
-            urls = [
-                "https://playwright.azureedge.net/{path}",
-                "https://playwright-akamai.azureedge.net/{path}",
-                "https://playwright-verizon.azureedge.net/{path}",
-            ],
+            {urls}
         )
 """.format(
             name = http_file_json["name"],
             path = path,
             integrity = integrity_attr,
+            urls = urls_attr,
         ))
+
     rctx.file("browsers.bzl", "\n".join(result_build))
     rctx.file("BUILD", "# no targets")
 
@@ -139,6 +142,14 @@ define_browsers = repository_rule(
     implementation = _define_browsers_impl,
     attrs = {
         "browsers_json": attr.label(allow_single_file = True),
+        "browsers_download_urls": attr.string_list(
+          default = [
+            "https://playwright.azureedge.net",
+            "https://playwright-akamai.azureedge.net",
+            "https://playwright-verizon.azureedge.net",
+          ],
+          doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+        ),
         "browser_integrity": attr.string_dict(
             doc = "A dictionary of browser names to their integrity hashes",
             default = {},
