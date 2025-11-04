@@ -34,6 +34,7 @@ def _playwright_repo_impl(ctx):
     playwright_version = ctx.attr.playwright_version
 
     if ctx.attr.playwright_version_from:
+        ctx.watch(ctx.attr.playwright_version_from)
         package_json_content = ctx.read(ctx.attr.playwright_version_from)
         package_json_data = json.decode(package_json_content)
         playwright_version = _extract_playwright_version(package_json_data)
@@ -41,6 +42,8 @@ def _playwright_repo_impl(ctx):
             fail("playwright not found in dependencies or devDependencies")
 
     ctx.watch(get_cli_path(ctx))
+    if ctx.attr.browsers_json:
+        ctx.watch(ctx.attr.browsers_json)
 
     result = ctx.execute(
         [
@@ -57,6 +60,9 @@ def _playwright_repo_impl(ctx):
 
     if result.return_code != 0:
         fail(ctx.attr.name, "workspace command failed", result.stdout, result.stderr)
+
+    if hasattr(ctx, "repo_metadata"):
+        return ctx.repo_metadata(reproducible = True)
 
 playwright_repository = repository_rule(
     _playwright_repo_impl,
@@ -87,6 +93,7 @@ playwright_repository = repository_rule(
 )
 
 def _define_browsers_impl(rctx):
+    rctx.watch(rctx.attr.browsers_json)
     result = rctx.execute(
         [
             get_cli_path(rctx),
@@ -137,6 +144,9 @@ def _define_browsers_impl(rctx):
 
     rctx.file("browsers.bzl", "\n".join(result_build))
     rctx.file("BUILD", "# no targets")
+
+    if hasattr(rctx, "repo_metadata"):
+        return rctx.repo_metadata(reproducible = True)
 
 define_browsers = repository_rule(
     implementation = _define_browsers_impl,
