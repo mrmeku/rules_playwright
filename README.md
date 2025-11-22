@@ -78,7 +78,7 @@ playwright_integrity_map(
             "mac14-arm64",
             "ubuntu20.04-x64",
         ],
-        playright_repo_name = "playwright",
+        playwright_repo_name = "playwright",
     ),
 )
 ```

@@ -32,7 +32,7 @@ playwright_integrity_map(<a href="#playwright_integrity_map-name">name</a>, <a h
 <pre>
 load("@rules_playwright//playwright:defs.bzl", "playwright_browser_matrix")
 
-playwright_browser_matrix(<a href="#playwright_browser_matrix-playright_repo_name">playright_repo_name</a>, <a href="#playwright_browser_matrix-platforms">platforms</a>, <a href="#playwright_browser_matrix-browser_names">browser_names</a>)
+playwright_browser_matrix(<a href="#playwright_browser_matrix-platforms">platforms</a>, <a href="#playwright_browser_matrix-browser_names">browser_names</a>, <a href="#playwright_browser_matrix-playwright_repo_name">playwright_repo_name</a>, <a href="#playwright_browser_matrix-playright_repo_name">playright_repo_name</a>)
 </pre>
 
 Generates a list of Bazel target labels for browser dependencies.
@@ -48,9 +48,10 @@ the appropriate Bazel target labels for each combination.
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="playwright_browser_matrix-playright_repo_name"></a>playright_repo_name |  The name of the Playwright repository.   |  none |
 | <a id="playwright_browser_matrix-platforms"></a>platforms |  A list of platform identifiers (e.g., ['mac14-arm', 'ubuntu20.04-x64]).   |  none |
 | <a id="playwright_browser_matrix-browser_names"></a>browser_names |  A list of browser names (e.g., ['chromium', 'firefox']).   |  none |
+| <a id="playwright_browser_matrix-playwright_repo_name"></a>playwright_repo_name |  The name of the Playwright repository.   |  `None` |
+| <a id="playwright_browser_matrix-playright_repo_name"></a>playright_repo_name |  (DEPRECATED: use playwright_repo_name instead) The name of the Playwright repository.   |  `None` |
 
 **RETURNS**
 

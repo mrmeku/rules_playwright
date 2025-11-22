@@ -67,7 +67,7 @@ playwright_integrity_map = rule(
     },
 )
 
-def playwright_browser_matrix(playright_repo_name, platforms, browser_names):
+def playwright_browser_matrix(platforms, browser_names, playwright_repo_name = None, playright_repo_name = None):
     """
     Generates a list of Bazel target labels for browser dependencies.
 
@@ -77,15 +77,24 @@ def playwright_browser_matrix(playright_repo_name, platforms, browser_names):
     "@{playright_repo_name}//browsers:{browser_name}-{platform}"
 
     Args:
-        playright_repo_name: The name of the Playwright repository.
         platforms: A list of platform identifiers (e.g., ['mac14-arm', 'ubuntu20.04-x64]).
         browser_names: A list of browser names (e.g., ['chromium', 'firefox']).
+        playwright_repo_name: The name of the Playwright repository.
+        playright_repo_name: (DEPRECATED: use playwright_repo_name instead) The name of the Playwright repository.
 
     Returns:
         A list of browser labels to be used as the browsers attribute of the integrity_map rule.
     """
+    # TODO(mrmeku/rules_playwright#26): remove playright_repo_name
+    if playwright_repo_name == None and playright_repo_name == None:
+        fail("playwright_repo_name must be specified")
+    if playwright_repo_name == None:
+        print("WARNING: playright_repo_name is deprecated, use playwright_repo_name instead")
+        playwright_repo_name = playright_repo_name
+    playright_repo_name = None
+
     browser_labels = []
     for browser in browser_names:
         for platform in platforms:
-            browser_labels.append("@{}//browsers:{}-{}".format(playright_repo_name, browser, platform))
+            browser_labels.append("@{}//browsers:{}-{}".format(playwright_repo_name, browser, platform))
     return browser_labels
