@@ -41,3 +41,26 @@ def get_cli_path(ctx):
         platform = "apple-darwin"
 
     return ctx.path(Label("//tools/release:artifacts/cli-{arch}-{platform}".format(platform = platform, arch = arch)))
+
+def get_all_cli_paths(ctx):
+    """Returns paths to all platform-specific CLI binaries.
+
+    Watching all CLI binaries (instead of just the current platform's) ensures
+    MODULE.bazel.lock remains consistent across different host platforms.
+
+    Args:
+        ctx: The Starlark context object
+
+    Returns:
+        List of paths to all CLI binaries for all supported platforms
+    """
+    platforms = [
+        ("arm64", "apple-darwin"),
+        ("x86_64", "apple-darwin"),
+        ("arm64", "unknown-linux-musl"),
+        ("x86_64", "unknown-linux-musl"),
+    ]
+    return [
+        ctx.path(Label("//tools/release:artifacts/cli-{arch}-{platform}".format(arch = arch, platform = platform)))
+        for arch, platform in platforms
+    ]

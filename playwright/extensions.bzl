@@ -12,7 +12,7 @@ effectively overriding the default named toolchain due to toolchain resolution p
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
-load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
+load("//playwright/private:util.bzl", "get_all_cli_paths", "get_browsers_json_path", "get_cli_path")
 load(":repositories.bzl", "playwright_repository")
 
 _DEFAULT_NAME = "playwright"
@@ -59,7 +59,11 @@ def _extension_impl(module_ctx):
                 """)
 
             cli = get_cli_path(module_ctx)
-            module_ctx.watch(cli)
+
+            # Watch all CLI binaries to ensure MODULE.bazel.lock remains consistent
+            # across platforms and detects changes when binaries are updated
+            for cli_path in get_all_cli_paths(module_ctx):
+                module_ctx.watch(cli_path)
 
             # Step 1: use module_ctx exec to get the list of browsers to iterate over and declare with http file
             result = module_ctx.execute(
