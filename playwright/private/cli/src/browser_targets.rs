@@ -43,7 +43,7 @@ pub fn get_browser_rules(
     let download_paths_json = include_str!("download_paths.json");
     let download_paths: DownloadPaths = serde_json::from_str(download_paths_json)?;
 
-    let has_headles = browsers
+    let has_headless = browsers
         .browsers
         .iter()
         .any(|b| b.name.ends_with("-headless-shell"));
@@ -52,7 +52,7 @@ pub fn get_browser_rules(
         .browsers
         .into_iter()
         .flat_map(|browser| {
-            if has_headles {
+            if has_headless {
                 return vec![browser];
             }
             // Handle headless browser variants
