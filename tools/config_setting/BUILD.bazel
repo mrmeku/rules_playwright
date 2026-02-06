@@ -34,15 +34,13 @@ config_setting(
     ],
 )
 
-config_setting(
-    name = "mac{}".format(version),
-    values = {
-        "//:macos_version": version,
-    },
-)
-
 [
-    
+    config_setting(
+        name = "mac{}".format(version),
+        values = {
+            "//:macos_version": version,
+        },
+    )
     for version in MACOS_VERSIONS
 ]
 
