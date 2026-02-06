@@ -100,6 +100,12 @@ pub fn get_browser_rules(
                                 .and_then(|overrides| overrides.get(platform))
                                 .unwrap_or(&browser.revision);
 
+                            let browser_version = if template.contains("{browserVersion}") {
+                                browser.browser_version.as_ref().unwrap()
+                            } else {
+                                ""
+                            };
+
                             let snake_case_browser_name = browser_name.replace("-", "_");
                             let browser_directory_prefix = if has_revision_override {
                                 format!(
@@ -114,7 +120,7 @@ pub fn get_browser_rules(
                                 http_file_workspace_name: format!(
                                     "{browsers_workspace_name_prefix}-{browser_name}-{platform_str}"
                                 ),
-                                http_file_path: template.replace("%s", revision),
+                                http_file_path: template.replace("{revision}", revision).replace("{browserVersion}", &browser_version),
                                 label: format!("{browser_name}-{platform_str}"),
                                 output_dir: format!(
                                     "{platform_str}/{}-{}",
