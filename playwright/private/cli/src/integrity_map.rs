@@ -10,8 +10,8 @@ pub fn integrity_map(output_path: PathBuf, browsers: Vec<String>, silent: bool) 
         .into_iter()
         .map(|browser| {
             (
-                to_integity_map_key(&browser),
-                to_integity_map_value(&browser),
+                to_integrity_map_key(&browser),
+                to_integrity_map_value(&browser),
             )
         })
         .collect::<HashMap<String, String>>();
@@ -25,7 +25,7 @@ pub fn integrity_map(output_path: PathBuf, browsers: Vec<String>, silent: bool) 
     fs::write(output_path, map_str).expect("Could not write file");
 }
 
-fn to_integity_map_key(browser: &str) -> String {
+fn to_integrity_map_key(browser: &str) -> String {
     browser
         .split(":")
         .next()
@@ -33,7 +33,7 @@ fn to_integity_map_key(browser: &str) -> String {
         .to_string()
 }
 
-fn to_integity_map_value(browser: &str) -> String {
+fn to_integrity_map_value(browser: &str) -> String {
     let path = browser
         .split(":")
         .nth(1)
