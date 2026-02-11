@@ -5,7 +5,7 @@ See https://docs.bazel.build/versions/main/skylark/deploying.html#dependencies
 """
 
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
-load("//playwright/private:util.bzl", "get_browsers_json_path", "get_cli_path")
+load("//playwright/private:util.bzl", "get_all_cli_paths", "get_browsers_json_path", "get_cli_path")
 
 _PLAYWRIGHT_PACKAGE = "playwright"
 _PLAYWRIGHT_TEST_PACKAGE = "@playwright/test"
@@ -41,7 +41,11 @@ def _playwright_repo_impl(ctx):
         if not playwright_version:
             fail("playwright not found in dependencies or devDependencies")
 
-    ctx.watch(get_cli_path(ctx))
+    # Watch all CLI binaries to ensure MODULE.bazel.lock remains consistent
+    # across platforms and detects changes when binaries are updated
+    for cli_path in get_all_cli_paths(ctx):
+        ctx.watch(cli_path)
+
     if ctx.attr.browsers_json:
         ctx.watch(ctx.attr.browsers_json)
 
@@ -93,6 +97,11 @@ playwright_repository = repository_rule(
 )
 
 def _define_browsers_impl(rctx):
+    # Watch all CLI binaries to ensure MODULE.bazel.lock remains consistent
+    # across platforms and detects changes when binaries are updated
+    for cli_path in get_all_cli_paths(rctx):
+        rctx.watch(cli_path)
+
     rctx.watch(rctx.attr.browsers_json)
     result = rctx.execute(
         [
