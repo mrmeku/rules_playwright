@@ -20,6 +20,16 @@ bzl_library(
     ],
 )
 
+starlark_doc_extract(
+    name = "defs.doc_extract",
+    src = "defs.bzl",
+    symbol_names = [
+        "playwright_integrity_map",
+        "playwright_browser_matrix",
+    ],
+    deps = [":defs"],
+)
+
 bzl_library(
     name = "extensions",
     srcs = ["extensions.bzl"],
@@ -30,6 +40,12 @@ bzl_library(
         ":repositories",
         "@bazel_tools//tools/build_defs/repo:cache.bzl",
     ],
+)
+
+starlark_doc_extract(
+    name = "extensions.doc_extract",
+    src = "extensions.bzl",
+    deps = [":extensions"],
 )
 
 bzl_library(
@@ -45,4 +61,10 @@ bzl_library(
         "@bazel_tools//tools/build_defs/repo:http.bzl",
         "@bazel_tools//tools/build_defs/repo:utils.bzl",
     ],
+)
+
+starlark_doc_extract(
+    name = "repositories.doc_extract",
+    src = "repositories.bzl",
+    deps = [":repositories"],
 )
