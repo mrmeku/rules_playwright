@@ -7,20 +7,19 @@ local_path_override(
 playwright = use_extension("@mrmeku_rules_playwright//playwright:extensions.bzl", "playwright")
 playwright.repo(
     name = "playwright",
-    browsers_json = "//:browsers.1.50.1.json",
-    # Derived from running //:playwright_integrity_map
     integrity_map = {
-        "builds/chromium/1155/chromium-headless-shell-mac-arm64.zip": "sha256-a499efe4d7e8b2dec1b654a51b524fce94078335e5c5ead91f20e8577ff534cd",
-        "builds/chromium/1155/chromium-headless-shell-linux.zip": "sha256-3536f44d07d251389a57be819cdb2ea724c5c9b6b1eb0eddd8a37c547cc05234",
-        "builds/firefox/1471/firefox-mac-arm64.zip": "sha256-f852c48e60b5ca99c023f0d0638b8986dc779103cde265fc2c2d13584b7dc7d6",
-        "builds/webkit/2123/webkit-mac-14-arm64.zip": "sha256-4621d40c13d50d19679201d7cdaa1e41e031792bcc89634ea6197f1a5123e5a0",
         "builds/webkit/2092/webkit-ubuntu-20.04.zip": "sha256-e1d1db96e964c578958958fc22b87acf3ab53ec54245f8e07925a90c7999fb44",
-        "builds/firefox/1471/firefox-ubuntu-20.04.zip": "sha256-10113c986a9e0452f02e39ebacfca4777ba8740eecd909bcdc81c6f6740ce79a",
+        "builds/firefox/1509/firefox-mac-arm64.zip": "sha256-173770f76c88a367b1deaf103ee8f66062b38390c3b96273c79b5fc3e0b2b910",
+        "builds/firefox/1509/firefox-ubuntu-20.04.zip": "sha256-3b8dadca58a1304cffb1a08b21bd7b6801c78ddf7f264e3cb08ce39f2cdc2602",
+        "builds/webkit/2248/webkit-mac-14-arm64.zip": "sha256-398033e7ecac6ac9d4234f879ee96bf5fb11a879cb53a75156f1273e46ddca59",
+        "builds/cft/145.0.7632.6/mac-arm64/chrome-headless-shell-mac-arm64.zip": "sha256-8510b9b1575538aa6a092ed16d981738b2ebf52c5e41ea4c54a7ce16756cdcf5",
+        "builds/cft/145.0.7632.6/linux64/chrome-headless-shell-linux64.zip": "sha256-2536e97d8f410df0394b3e7c4252e88ce9f239f04f3af4e247a26caf45baf49e",
     },
+    playwright_version = "1.58.1",
 )
 use_repo(playwright, "playwright")
 
-bazel_dep(name = "aspect_rules_js", version = "2.1.2")
+bazel_dep(name = "aspect_rules_js", version = "2.9.2")
 
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
 npm.npm_translate_lock(
