@@ -22,9 +22,6 @@ build:release --@rules_rust//rust/settings:lto=fat
 common --per_file_copt=external/.*protobuf.*@--PROTOBUF_WAS_NOT_SUPPOSED_TO_BE_BUILT
 common --host_per_file_copt=external/.*protobuf.*@--PROTOBUF_WAS_NOT_SUPPOSED_TO_BE_BUILT
 
-# Stardoc needs a jdk; give a hermetic one
-common --java_runtime_version=remotejdk_11
-
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this
