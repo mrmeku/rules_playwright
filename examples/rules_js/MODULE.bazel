@@ -20,7 +20,7 @@ playwright.repo(
 )
 use_repo(playwright, "playwright")
 
-bazel_dep(name = "aspect_rules_js", version = "2.1.2")
+bazel_dep(name = "aspect_rules_js", version = "2.9.2")
 
 npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
 npm.npm_translate_lock(
