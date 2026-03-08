@@ -162,12 +162,12 @@ define_browsers = repository_rule(
     attrs = {
         "browsers_json": attr.label(allow_single_file = True),
         "browsers_download_urls": attr.string_list(
-          default = [
-            "https://playwright.azureedge.net",
-            "https://playwright-akamai.azureedge.net",
-            "https://playwright-verizon.azureedge.net",
-          ],
-          doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+            default = [
+                "https://cdn.playwright.dev/dbazure/download/playwright",
+                "https://playwright.download.prss.microsoft.com/dbazure/download/playwright",
+                "https://cdn.playwright.dev",
+            ],
+            doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
         ),
         "browser_integrity": attr.string_dict(
             doc = "A dictionary of browser names to their integrity hashes",

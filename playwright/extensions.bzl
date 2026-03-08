@@ -24,12 +24,12 @@ Overriding the default is only permitted in the root module.
 """, default = _DEFAULT_NAME),
     "playwright_version": attr.string(doc = "Explicit version of playwright to download browsers.json from"),
     "browsers_download_urls": attr.string_list(
-      default = [
-        "https://playwright.azureedge.net",
-        "https://playwright-akamai.azureedge.net",
-        "https://playwright-verizon.azureedge.net",
-      ],
-      doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+        default = [
+            # "https://cdn.playwright.dev/dbazure/download/playwright",
+            # "https://playwright.download.prss.microsoft.com/dbazure/download/playwright",
+            "https://cdn.playwright.dev",
+        ],
+        doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
     ),
     "browsers_json": attr.label(doc = "Alternative to playwright_version. Skips downloading from unpkg", allow_single_file = True),
     "integrity_map": attr.string_dict(

@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@playwright/test": "1.52.0",
+    "@playwright/test": "1.58.1",
     "@types/http-server": "^0.12.4",
     "@types/node": "^22.10.8",
     "http-server": "^14.1.1"
