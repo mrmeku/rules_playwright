@@ -1,4 +1,4 @@
 target/
 node_modules/
-examples/rules_js
+examples/
 gen/
