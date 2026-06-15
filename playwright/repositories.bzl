@@ -163,9 +163,11 @@ define_browsers = repository_rule(
         "browsers_json": attr.label(allow_single_file = True),
         "browsers_download_urls": attr.string_list(
           default = [
-            "https://playwright.azureedge.net",
-            "https://playwright-akamai.azureedge.net",
-            "https://playwright-verizon.azureedge.net",
+            # Storage bucket which serves both the legacy `builds/chromium/...`
+            # archives and the Chrome for Testing `builds/cft/...` archives used
+            # by Playwright >= 1.57. The deprecated azureedge.net mirrors do not
+            # serve the CfT paths.
+            "https://cdn.playwright.dev",
           ],
           doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
         ),

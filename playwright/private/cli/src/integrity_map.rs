@@ -19,10 +19,41 @@ pub fn integrity_map(output_path: PathBuf, browsers: Vec<String>, silent: bool) 
     let map_str = serde_json::to_string_pretty(&integrity_map)
         .expect("Could not serialize integrity map to json");
     if !silent {
-        println!("integrity_map = {}", map_str);
+        // Print using the `integrity_path_map` attribute name so the output can be
+        // pasted directly into playwright.repo() / MODULE.bazel.
+        println!("integrity_path_map = {}", map_str);
     }
 
     fs::write(output_path, map_str).expect("Could not write file");
+}
+
+/// Standard (RFC 4648) base64 encoding. Bazel's Subresource Integrity (SRI)
+/// checksums expect the digest to be base64 encoded (e.g. "sha256-<base64>"),
+/// not hex encoded.
+fn base64_encode(bytes: &[u8]) -> String {
+    const TABLE: &[u8; 64] =
+        b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut encoded = String::with_capacity(bytes.len().div_ceil(3) * 4);
+    for chunk in bytes.chunks(3) {
+        let b0 = chunk[0] as usize;
+        let b1 = *chunk.get(1).unwrap_or(&0) as usize;
+        let b2 = *chunk.get(2).unwrap_or(&0) as usize;
+        let triple = (b0 << 16) | (b1 << 8) | b2;
+
+        encoded.push(TABLE[(triple >> 18) & 0x3f] as char);
+        encoded.push(TABLE[(triple >> 12) & 0x3f] as char);
+        encoded.push(if chunk.len() > 1 {
+            TABLE[(triple >> 6) & 0x3f] as char
+        } else {
+            '='
+        });
+        encoded.push(if chunk.len() > 2 {
+            TABLE[triple & 0x3f] as char
+        } else {
+            '='
+        });
+    }
+    encoded
 }
 
 fn to_integrity_map_key(browser: &str) -> String {
@@ -55,5 +86,5 @@ fn to_integrity_map_value(browser: &str) -> String {
     }
 
     let hash = hasher.finalize();
-    format!("sha256-{:x}", hash)
+    format!("sha256-{}", base64_encode(&hash))
 }

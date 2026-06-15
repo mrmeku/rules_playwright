@@ -25,9 +25,11 @@ Overriding the default is only permitted in the root module.
     "playwright_version": attr.string(doc = "Explicit version of playwright to download browsers.json from"),
     "browsers_download_urls": attr.string_list(
       default = [
-        "https://playwright.azureedge.net",
-        "https://playwright-akamai.azureedge.net",
-        "https://playwright-verizon.azureedge.net",
+        # Storage bucket which serves both the legacy `builds/chromium/...`
+        # archives and the Chrome for Testing `builds/cft/...` archives used by
+        # Playwright >= 1.57. The deprecated azureedge.net mirrors do not serve
+        # the CfT paths.
+        "https://cdn.playwright.dev",
       ],
       doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
     ),
