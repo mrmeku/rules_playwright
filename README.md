@@ -29,6 +29,40 @@ playwright.repo(
 use_repo(playwright, "playwright")
 ```
 
+### Custom Browser Download URLs
+
+`browsers_download_urls` accepts either URL prefixes or URL templates containing `{path}`. Prefixes keep the historical behavior and append the browser archive path. Templates replace `{path}` with the resolved archive path, which is useful for internal mirrors:
+
+```python
+playwright.repo(
+    name = "playwright",
+    browsers_download_urls = [
+        "https://mirror.example.com/playwright/{path}",
+        "https://playwright.azureedge.net",
+    ],
+    playwright_version = "1.60.0",
+)
+```
+
+Use `browser_download_path_map` when Playwright's metadata points at an archive path that should be downloaded from a different path:
+
+```python
+playwright.repo(
+    name = "playwright",
+    browser_download_path_map = {
+        "builds/chromium/1223/chromium-linux.zip": "builds/cft/148.0.7778.96/linux64/chrome-linux64.zip",
+    },
+    browser_download_url_map = {
+        "builds/chromium/1223/chromium-linux.zip": [
+            "https://cdn.playwright.dev/{path}",
+        ],
+    },
+    playwright_version = "1.60.0",
+)
+```
+
+The same `browsers_download_urls`, `browser_download_path_map`, and `browser_download_url_map` attributes are available on `define_browsers` for WORKSPACE users.
+
 ## Usage with rules_js
 
 Here's an example of how to use `rules_playwright` with Playwright's test runner and `rules_js`:

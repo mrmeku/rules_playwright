@@ -4,6 +4,7 @@ These are needed for local dev, and users must install them as well.
 See https://docs.bazel.build/versions/main/skylark/deploying.html#dependencies
 """
 
+load("//playwright/private:download_urls.bzl", "DEFAULT_BROWSERS_DOWNLOAD_URLS", "browser_download_info")
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 load("//playwright/private:util.bzl", "get_all_cli_paths", "get_browsers_json_path", "get_cli_path")
 
@@ -129,13 +130,17 @@ def _define_browsers_impl(rctx):
 
     for http_file_json in json.decode(result.stdout):
         path = http_file_json["path"]
+        download = browser_download_info(path, rctx.attr.browsers_download_urls, rctx.attr.browser_download_path_map, rctx.attr.browser_download_url_map)
         integrity_attr = ""
-        if path in integrity_map:
-            integrity_attr = 'integrity = "{}",\n'.format(integrity_map[path])
+        integrity = integrity_map.get(download.path, None)
+        if not integrity:
+            integrity = integrity_map.get(path, None)
+        if integrity:
+            integrity_attr = 'integrity = "{}",\n'.format(integrity)
 
         urls_attr = "urls = [\n"
-        for url in rctx.attr.browsers_download_urls:
-            urls_attr = urls_attr + "\"{}/{}\",\n".format(url, path)
+        for url in download.urls:
+            urls_attr = urls_attr + "\"{}\",\n".format(url)
         urls_attr = urls_attr + "],"
 
         result_build.append("""\
@@ -162,12 +167,16 @@ define_browsers = repository_rule(
     attrs = {
         "browsers_json": attr.label(allow_single_file = True),
         "browsers_download_urls": attr.string_list(
-          default = [
-            "https://playwright.azureedge.net",
-            "https://playwright-akamai.azureedge.net",
-            "https://playwright-verizon.azureedge.net",
-          ],
-          doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+            default = DEFAULT_BROWSERS_DOWNLOAD_URLS,
+            doc = "URLs to download playwright browsers from. Entries containing `{path}` are treated as URL templates; otherwise the browser archive path is appended.",
+        ),
+        "browser_download_path_map": attr.string_dict(
+            doc = "Mapping from Playwright browser archive paths to replacement download paths.",
+            default = {},
+        ),
+        "browser_download_url_map": attr.string_list_dict(
+            doc = "Mapping from Playwright browser archive paths to replacement download URL templates.",
+            default = {},
         ),
         "browser_integrity": attr.string_dict(
             doc = "A dictionary of browser names to their integrity hashes",

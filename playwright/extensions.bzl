@@ -11,6 +11,7 @@ effectively overriding the default named toolchain due to toolchain resolution p
 """
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+load("//playwright/private:download_urls.bzl", "DEFAULT_BROWSERS_DOWNLOAD_URLS", "browser_download_info")
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 load("//playwright/private:util.bzl", "get_all_cli_paths", "get_browsers_json_path", "get_cli_path")
 load(":repositories.bzl", "playwright_repository")
@@ -24,12 +25,16 @@ Overriding the default is only permitted in the root module.
 """, default = _DEFAULT_NAME),
     "playwright_version": attr.string(doc = "Explicit version of playwright to download browsers.json from"),
     "browsers_download_urls": attr.string_list(
-      default = [
-        "https://playwright.azureedge.net",
-        "https://playwright-akamai.azureedge.net",
-        "https://playwright-verizon.azureedge.net",
-      ],
-      doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+        default = DEFAULT_BROWSERS_DOWNLOAD_URLS,
+        doc = "URLs to download playwright browsers from. Entries containing `{path}` are treated as URL templates; otherwise the browser archive path is appended.",
+    ),
+    "browser_download_path_map": attr.string_dict(
+        default = {},
+        doc = "Mapping from Playwright browser archive paths to replacement download paths.",
+    ),
+    "browser_download_url_map": attr.string_list_dict(
+        default = {},
+        doc = "Mapping from Playwright browser archive paths to replacement download URL templates.",
     ),
     "browsers_json": attr.label(doc = "Alternative to playwright_version. Skips downloading from unpkg", allow_single_file = True),
     "integrity_map": attr.string_dict(
@@ -82,18 +87,21 @@ def _extension_impl(module_ctx):
             for http_file_json in json.decode(result.stdout):
                 browser_name = http_file_json["name"]
                 path = http_file_json["path"]
+                download = browser_download_info(path, repo.browsers_download_urls, repo.browser_download_path_map, repo.browser_download_url_map)
                 integrity = repo.integrity_map.get(browser_name, None)
                 if not integrity:
-                    integrity = repo.integrity_path_map.get(path, None)
+                    integrity = repo.integrity_path_map.get(download.path, None)
+                    if not integrity:
+                        integrity = repo.integrity_path_map.get(path, None)
+                    if not integrity:
+                        integrity = KNOWN_BROWSER_INTEGRITY.get(download.path, None)
                     if not integrity:
                         integrity = KNOWN_BROWSER_INTEGRITY.get(path, None)
-
-                urls = [url + "/" + path for url in repo.browsers_download_urls]
 
                 http_file(
                     name = browser_name,
                     integrity = integrity,
-                    urls = urls,
+                    urls = download.urls,
                 )
 
             # Step 2: generate repository which references said http_files

@@ -38,6 +38,7 @@ bzl_library(
     ],
     deps = [
         ":repositories",
+        "//playwright/private:download_urls",
         "@bazel_tools//tools/build_defs/repo:cache.bzl",
     ],
 )
@@ -56,6 +57,7 @@ bzl_library(
         "//docs:__subpackages__",
     ],
     deps = [
+        "//playwright/private:download_urls",
         "//playwright/private:known_browsers",
         "//playwright/private:util",
         "@bazel_tools//tools/build_defs/repo:http.bzl",
