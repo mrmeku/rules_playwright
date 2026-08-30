@@ -13,9 +13,8 @@ playwright_bin.playwright_test(
         "@playwright//:chromium-headless-shell",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
+        "PLAYWRIGHT_BROWSERS_PATH": "$$RUNFILES_DIR/$(rlocationpath @playwright//:chromium-headless-shell)/../",
     },
-    tags = ["requires-network"],
 )
 
 playwright_bin.playwright_test(
@@ -28,7 +27,6 @@ playwright_bin.playwright_test(
         "@playwright_2//:chromium-headless-shell",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright_2//:chromium-headless-shell)/../",
+        "PLAYWRIGHT_BROWSERS_PATH": "$$RUNFILES_DIR/$(rlocationpath @playwright_2//:chromium-headless-shell)/../",
     },
-    tags = ["requires-network"],
 )

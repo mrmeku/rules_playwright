@@ -29,6 +29,11 @@ playwright.repo(
 use_repo(playwright, "playwright")
 ```
 
+Playwright 1.57 and newer use Chrome-for-Testing archives for Chromium on
+Linux x86_64 and macOS. `rules_playwright` derives those paths from the exact
+Playwright version and its pinned `browsers.json`; Linux ARM64 retains
+Playwright's revision-based archive layout.
+
 ## Usage with rules_js
 
 Here's an example of how to use `rules_playwright` with Playwright's test runner and `rules_js`:
@@ -51,11 +56,14 @@ playwright_bin.playwright_test(
         "@playwright//:webkit",
     ],
     env = {
-        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
+        "PLAYWRIGHT_BROWSERS_PATH": "$$RUNFILES_DIR/$(rlocationpath @playwright//:chromium-headless-shell)/../",
     },
     tags = ["no-sandbox"],  # Required for Firefox on macOS
 )
 ```
+
+Use the canonical runfiles path above when the launcher sets `chdir`; a
+relative `rootpath` is then resolved from the changed working directory.
 
 For a complete example, see [examples/rules_js](examples/rules_js).
 

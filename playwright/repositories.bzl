@@ -5,6 +5,7 @@ See https://docs.bazel.build/versions/main/skylark/deploying.html#dependencies
 """
 
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
+load("//playwright/private:download_paths.bzl", "browser_versions_from_json", "rewrite_browser_download_path")
 load("//playwright/private:util.bzl", "get_all_cli_paths", "get_browsers_json_path", "get_cli_path")
 
 _PLAYWRIGHT_PACKAGE = "playwright"
@@ -49,12 +50,14 @@ def _playwright_repo_impl(ctx):
     if ctx.attr.browsers_json:
         ctx.watch(ctx.attr.browsers_json)
 
+    browsers_json_path = get_browsers_json_path(ctx, playwright_version, ctx.attr.browsers_json)
+    browser_versions = browser_versions_from_json(ctx.read(browsers_json_path))
     result = ctx.execute(
         [
             get_cli_path(ctx),
             "workspace",
             "--browser-json-path",
-            get_browsers_json_path(ctx, playwright_version, ctx.attr.browsers_json),
+            browsers_json_path,
             "--browsers-workspace-name-prefix",
             ctx.attr.browsers_workspace_name_prefix,
             "--rules-playwright-cannonical-name",
@@ -64,6 +67,24 @@ def _playwright_repo_impl(ctx):
 
     if result.return_code != 0:
         fail(ctx.attr.name, "workspace command failed", result.stdout, result.stderr)
+
+    http_files_result = ctx.execute([
+        get_cli_path(ctx),
+        "http-files",
+        "--browser-json-path",
+        browsers_json_path,
+        "--browsers-workspace-name-prefix",
+        ctx.attr.browsers_workspace_name_prefix,
+    ])
+    if http_files_result.return_code != 0:
+        fail(ctx.attr.name, "http-files command failed", http_files_result.stdout, http_files_result.stderr)
+
+    browsers_build = ctx.read("browsers/BUILD.bazel")
+    for http_file_json in json.decode(http_files_result.stdout):
+        legacy_path = http_file_json["path"]
+        path = rewrite_browser_download_path(legacy_path, playwright_version, browser_versions)
+        browsers_build = browsers_build.replace(legacy_path, path)
+    ctx.file("browsers/BUILD.bazel", browsers_build)
 
     if hasattr(ctx, "repo_metadata"):
         return ctx.repo_metadata(reproducible = True)
@@ -124,11 +145,16 @@ def _define_browsers_impl(rctx):
     # Create a new dictionary by merging the known browser integrity with the user-provided integrity
     # User-provided integrity takes precedence
     integrity_map = dict(KNOWN_BROWSER_INTEGRITY)
+    browser_versions = browser_versions_from_json(rctx.read(rctx.attr.browsers_json))
     for key, value in rctx.attr.browser_integrity.items():
         integrity_map[key] = value
 
     for http_file_json in json.decode(result.stdout):
-        path = http_file_json["path"]
+        path = rewrite_browser_download_path(
+            http_file_json["path"],
+            rctx.attr.playwright_version,
+            browser_versions,
+        )
         integrity_attr = ""
         if path in integrity_map:
             integrity_attr = 'integrity = "{}",\n'.format(integrity_map[path])
@@ -161,13 +187,16 @@ define_browsers = repository_rule(
     implementation = _define_browsers_impl,
     attrs = {
         "browsers_json": attr.label(allow_single_file = True),
+        "playwright_version": attr.string(
+            doc = "The Playwright version associated with browsers_json",
+        ),
         "browsers_download_urls": attr.string_list(
-          default = [
-            "https://playwright.azureedge.net",
-            "https://playwright-akamai.azureedge.net",
-            "https://playwright-verizon.azureedge.net",
-          ],
-          doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+            default = [
+                "https://cdn.playwright.dev",
+                "https://cdn.playwright.dev/dbazure/download/playwright",
+                "https://playwright.download.prss.microsoft.com/dbazure/download/playwright",
+            ],
+            doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
         ),
         "browser_integrity": attr.string_dict(
             doc = "A dictionary of browser names to their integrity hashes",

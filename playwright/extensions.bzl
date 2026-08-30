@@ -11,6 +11,7 @@ effectively overriding the default named toolchain due to toolchain resolution p
 """
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+load("//playwright/private:download_paths.bzl", "browser_versions_from_json", "rewrite_browser_download_path")
 load("//playwright/private:known_browsers.bzl", "KNOWN_BROWSER_INTEGRITY")
 load("//playwright/private:util.bzl", "get_all_cli_paths", "get_browsers_json_path", "get_cli_path")
 load(":repositories.bzl", "playwright_repository")
@@ -24,12 +25,12 @@ Overriding the default is only permitted in the root module.
 """, default = _DEFAULT_NAME),
     "playwright_version": attr.string(doc = "Explicit version of playwright to download browsers.json from"),
     "browsers_download_urls": attr.string_list(
-      default = [
-        "https://playwright.azureedge.net",
-        "https://playwright-akamai.azureedge.net",
-        "https://playwright-verizon.azureedge.net",
-      ],
-      doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
+        default = [
+            "https://cdn.playwright.dev",
+            "https://cdn.playwright.dev/dbazure/download/playwright",
+            "https://playwright.download.prss.microsoft.com/dbazure/download/playwright",
+        ],
+        doc = "URLs to download playwright browsers from. Replace defaults if a mirror location is preferred.",
     ),
     "browsers_json": attr.label(doc = "Alternative to playwright_version. Skips downloading from unpkg", allow_single_file = True),
     "integrity_map": attr.string_dict(
@@ -66,12 +67,14 @@ def _extension_impl(module_ctx):
                 module_ctx.watch(cli_path)
 
             # Step 1: use module_ctx exec to get the list of browsers to iterate over and declare with http file
+            browsers_json_path = get_browsers_json_path(module_ctx, repo.playwright_version, repo.browsers_json)
+            browser_versions = browser_versions_from_json(module_ctx.read(browsers_json_path))
             result = module_ctx.execute(
                 [
                     cli,
                     "http-files",
                     "--browser-json-path",
-                    get_browsers_json_path(module_ctx, repo.playwright_version, repo.browsers_json),
+                    browsers_json_path,
                     "--browsers-workspace-name-prefix",
                     repo.name,
                 ],
@@ -81,7 +84,11 @@ def _extension_impl(module_ctx):
 
             for http_file_json in json.decode(result.stdout):
                 browser_name = http_file_json["name"]
-                path = http_file_json["path"]
+                path = rewrite_browser_download_path(
+                    http_file_json["path"],
+                    repo.playwright_version,
+                    browser_versions,
+                )
                 integrity = repo.integrity_map.get(browser_name, None)
                 if not integrity:
                     integrity = repo.integrity_path_map.get(path, None)
