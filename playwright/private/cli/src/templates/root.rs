@@ -1,5 +1,5 @@
 use askama::Template;
-use std::{collections::HashMap, fs, io, path::Path};
+use std::{collections::BTreeMap, fs, io, path::Path};
 
 use super::RootTarget;
 
@@ -41,7 +41,7 @@ struct SelectPlatformGroup {
 
 pub fn write_build_file(
     out_dir: &Path,
-    root_targets: &HashMap<String, RootTarget>,
+    root_targets: &BTreeMap<String, RootTarget>,
     rules_playwright_cannonical_name: &str,
 ) -> io::Result<()> {
     let select_targets: Vec<SelectTarget> = root_targets

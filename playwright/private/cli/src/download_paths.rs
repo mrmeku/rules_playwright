@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 
 use serde::{Deserialize, Serialize};
 
@@ -9,7 +9,7 @@ pub struct DownloadPaths {
     pub paths: HashMap<String, BuildPaths>,
 }
 
-#[derive(Debug, Clone, Hash, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Hash, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum Platform {
     #[serde(rename = "ubuntu18.04-x64")]
@@ -81,5 +81,5 @@ impl PlatformBase for Platform {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BuildPaths {
     #[serde(flatten)]
-    pub paths: HashMap<Platform, Option<String>>,
+    pub paths: BTreeMap<Platform, Option<String>>,
 }

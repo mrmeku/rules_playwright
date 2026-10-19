@@ -1,12 +1,12 @@
 use sha2::{Digest, Sha256};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
 
 pub fn integrity_map(output_path: PathBuf, browsers: Vec<String>, silent: bool) {
-    let integrity_map: HashMap<String, String> = browsers
+    let integrity_map: BTreeMap<String, String> = browsers
         .into_iter()
         .map(|browser| {
             (
@@ -14,7 +14,7 @@ pub fn integrity_map(output_path: PathBuf, browsers: Vec<String>, silent: bool) 
                 to_integrity_map_value(&browser),
             )
         })
-        .collect::<HashMap<String, String>>();
+        .collect::<BTreeMap<String, String>>();
 
     let map_str = serde_json::to_string_pretty(&integrity_map)
         .expect("Could not serialize integrity map to json");

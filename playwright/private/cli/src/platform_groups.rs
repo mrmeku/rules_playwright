@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::download_paths::Platform;
 
-#[derive(Debug, Clone, Hash, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Hash, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize)]
 pub enum PlatformGroup {
     LinuxX86_64,
     LinuxArm64,

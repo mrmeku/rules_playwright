@@ -1,4 +1,4 @@
-use std::{collections::HashMap, io, path::Path};
+use std::{collections::BTreeMap, io, path::Path};
 
 use crate::{
     browser_targets::BrowserTarget, download_paths::Platform, platform_groups::PlatformGroup,
@@ -15,13 +15,13 @@ pub fn write_workspace(
 ) -> io::Result<()> {
     browsers::write_build_file(out_dir, &browser_targets, rules_playwright_cannonical_name)?;
 
-    let mut root_targets: HashMap<String, RootTarget> = HashMap::new();
+    let mut root_targets: BTreeMap<String, RootTarget> = BTreeMap::new();
     for target in browser_targets {
         let root_target = root_targets
             .entry(target.browser)
             .or_insert_with(|| RootTarget {
                 name: target.browser_name,
-                src_select: HashMap::new(),
+                src_select: BTreeMap::new(),
             });
 
         let platform_group: PlatformGroup = target.platform.clone().into();
@@ -30,7 +30,7 @@ pub fn write_workspace(
             .entry(platform_group.clone())
             .or_insert_with(|| PlatformGroupTarget {
                 name: platform_group.into(),
-                src_select: HashMap::new(),
+                src_select: BTreeMap::new(),
             });
 
         platform_group_target.src_select.insert(
@@ -49,12 +49,12 @@ pub fn write_workspace(
 
 struct RootTarget {
     pub name: String,
-    pub src_select: HashMap<PlatformGroup, PlatformGroupTarget>,
+    pub src_select: BTreeMap<PlatformGroup, PlatformGroupTarget>,
 }
 
 struct PlatformGroupTarget {
     pub name: String,
-    pub src_select: HashMap<Platform, PlatformTarget>,
+    pub src_select: BTreeMap<Platform, PlatformTarget>,
 }
 
 #[allow(dead_code)]
